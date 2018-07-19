@@ -1,0 +1,53 @@
+package com.tdl3.sources;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import javax.swing.JTextArea;
+
+public class Youtube_DL extends Thread{
+	
+	private String url, newdir, fdir;
+	private JTextArea textArea_Output;
+	private boolean convert;
+	
+	public Youtube_DL(String url, String newdir, JTextArea textArea_Output, boolean convert, String fdir) {
+		this.url = url;
+		this.fdir = fdir;
+		this.newdir = newdir;
+		this.convert = convert;
+		this.textArea_Output = textArea_Output;
+	}
+
+	public void run() {
+		textArea_Output.setText("Processing, Please Wait" + "\n");
+    	try {
+    		
+            Runtime rt = Runtime.getRuntime();
+            Process youtube_dl = rt.exec(
+             	"youtube-dl.exe --newline --write-thumbnail --write-auto-sub --write-sub --sub-format vtt -o " + newdir + " -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio " + url,
+             	null,
+             	new File("/")
+             	);
+            BufferedReader input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
+
+            String line=null;
+            
+            while((line=input.readLine()) != null && !Thread.currentThread().isInterrupted()) textArea_Output.append(line +"\n");
+            input.close();
+            int exitVal = youtube_dl.waitFor();
+            textArea_Output.append("operation completed whith exit code " + exitVal + "\n");
+            if (convert) new FFmpeg(fdir, textArea_Output).start();
+           
+
+ 		} catch(IOException e) {
+ 			textArea_Output.append("ERROR_YOUTUBEDL_START_FAIL");
+ 		} catch(InterruptedException e) {
+ 			textArea_Output.append("INTERRUPTED_BY_USER");
+ 		}
+		
+	}
+
+}
