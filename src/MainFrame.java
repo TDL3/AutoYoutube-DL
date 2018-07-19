@@ -8,10 +8,10 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Writer;
 import java.util.prefs.Preferences;
 
 import javax.swing.GroupLayout;
@@ -33,35 +33,40 @@ public class MainFrame extends JFrame{
 
 	private static final long serialVersionUID = -881158862942563089L;
 	
-	private JTextField textField_Dir;
-	private JTextField textField_NewFolder;
-	private JTextField textField_URL;
+	private JTextField textField_Dir, textField_NewFolder, textField_URL;
 	
-	private JButton btnSelectFolder = new JButton("Selet Folder");
-	private JButton btnStart = new JButton("Start");
-	private JButton btnOpenOutput = new JButton("Output");
+	private JButton btnSelectFolder = new JButton("Selet Folder"),
+			btnStart = new JButton("Start"),
+			btnOpenOutput = new JButton("Open Folder"),
+			btnCancl = new JButton("Cancel");
 	
-	private JLabel lblWorkDirectory = new JLabel("Work Dir");
-	private JLabel lblNewFolderName = new JLabel("Folder Name");
-	private JLabel lblVideoUrl = new JLabel("Video URL");
-	private JLabel lblOutput = new JLabel("Log");
+	private JLabel lblWorkDirectory = new JLabel("Work Folder"),
+			lblNewFolderName = new JLabel("Folder Name"),
+			lblVideoUrl = new JLabel("Video URL"),
+			lblOutput = new JLabel("Logs");
 	
-	private JCheckBox chckbxConvertVtt = new JCheckBox("Convert VTT to SRT");
-
-	protected JTextArea textArea_Output = new JTextArea(10,15);
+	private final JCheckBox chckbxConvertVtt = new JCheckBox("Convert VTT to SRT"),
+			chckbxMergeVideoAnd = new JCheckBox("Merge video and audio"),
+			chckbxUseProxy = new JCheckBox("Use proxy"),
+			chckbxSaveUrlTo = new JCheckBox("Save URL");
+	
+	private JTextArea textArea_Output = new JTextArea(10,15);
 	
 	private JScrollPane scrollBar = new JScrollPane(textArea_Output, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	private final JPanel panel = new JPanel();
 
-	private String url, folder, dir,currentPath;
+	private String url, folder, dir, currentPath;
 	private Preferences prefs;
+	
+	private File URL;
 	//private Worker worker;
+	private Youtube_DL youtubedl;
 	
 	public MainFrame() {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/com/tdl3/thiredparty/images/download.png")));
-		setTitle("AutoYutube-DL Beta 1.0");
+		setTitle("AutoYutube-DL Beta 1.1.3");
 		setVisible(true);
 		setSize(800,400);
 		setResizable(false);
@@ -73,12 +78,7 @@ public class MainFrame extends JFrame{
 		initComponents();
 		initEvents();
 		
-		
-		try {
-			currentPath = new java.io.File( "." ).getCanonicalPath();
-		} catch (IOException e) {
-			textArea_Output.append("UNKNOWN_ERROR_CURRENT_PATH_UNKNOWN" +"\n");
-		}
+		currentPath = System.getProperty("user.dir");
 
 	}
 	
@@ -88,10 +88,12 @@ public class MainFrame extends JFrame{
 		btnSelectFolder.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		
 		textField_Dir = new JTextField();
+		textField_Dir.setToolTipText("Do not contain any of the following characters: / \\ \" * ? \" < > |");
 		textField_Dir.setColumns(10);
 		textField_Dir.setText(prefs.get("DIR", null));
 		
 		textField_NewFolder = new JTextField();
+		textField_NewFolder.setToolTipText("Do not contain any of the following characters: / \\ \" * ? \" < > |");
 		textField_NewFolder.setColumns(10);
 		textField_NewFolder.setText(prefs.get("FOLDER", null));
 		
@@ -122,6 +124,7 @@ public class MainFrame extends JFrame{
 		textArea_Output.setLineWrap(true);
 		textArea_Output.setBounds(94, 182, 577, 175);
 		textArea_Output.setEditable(true);
+		
 		DefaultCaret caret = (DefaultCaret)textArea_Output.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollBar.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -129,6 +132,19 @@ public class MainFrame extends JFrame{
 		scrollBar.setPreferredSize(new Dimension(577, 175));
 		
 		panel.add(scrollBar);
+		
+		if (prefs.getBoolean("CONVERTVTT", true)) chckbxConvertVtt.setSelected(true);
+		if (prefs.getBoolean("PROXY", true)) chckbxUseProxy.setSelected(true);
+		if (prefs.getBoolean("MERGE", true)) chckbxMergeVideoAnd.setSelected(true);
+		if (prefs.getBoolean("SAVEURL", true)) chckbxSaveUrlTo.setSelected(true);
+		
+		url = textField_URL.getText();
+		dir = textField_Dir.getText();
+		folder = textField_NewFolder.getText();
+		
+		
+		btnCancl.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		btnCancl.setBackground(Color.LIGHT_GRAY);
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -139,33 +155,34 @@ public class MainFrame extends JFrame{
 							.addComponent(lblWorkDirectory, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
 							.addComponent(textField_Dir, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnSelectFolder, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(lblNewFolderName, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-							.addGap(10)
-							.addComponent(textField_NewFolder, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(lblVideoUrl, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblVideoUrl, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
 							.addComponent(textField_URL, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(96)
-							.addComponent(chckbxConvertVtt, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
+							.addComponent(chckbxConvertVtt, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+							.addComponent(chckbxMergeVideoAnd, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(chckbxUseProxy)
+							.addGap(18)
+							.addComponent(chckbxSaveUrlTo, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblOutput, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
+							.addComponent(lblOutput, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(9)
-									.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-									.addComponent(btnOpenOutput, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)))))
+								.addComponent(btnCancl, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewFolderName, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(textField_NewFolder, GroupLayout.PREFERRED_SIZE, 577, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnOpenOutput, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -174,39 +191,42 @@ public class MainFrame extends JFrame{
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblWorkDirectory, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+							.addGap(5)
+							.addComponent(lblWorkDirectory))
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textField_Dir, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSelectFolder, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
+					.addGap(14, 14, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(textField_Dir, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
-						.addComponent(btnSelectFolder, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addGap(17)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(5)
-									.addComponent(lblNewFolderName, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-								.addComponent(textField_NewFolder, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+							.addGap(5)
+							.addComponent(lblNewFolderName))
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textField_NewFolder, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpenOutput, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
+					.addGap(14)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblVideoUrl))
+						.addComponent(textField_URL, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+					.addGap(14)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(chckbxConvertVtt)
+						.addComponent(chckbxMergeVideoAnd)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(chckbxUseProxy)
+							.addComponent(chckbxSaveUrlTo)))
+					.addGap(3)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblOutput)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(7)
+							.addComponent(btnStart)
 							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(5)
-									.addComponent(lblVideoUrl, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-								.addComponent(textField_URL, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
-							.addGap(14)
-							.addComponent(chckbxConvertVtt)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblOutput)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-							.addGap(119)
-							.addComponent(btnOpenOutput, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-							.addGap(9)))
-					.addContainerGap())
+							.addComponent(btnCancl, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
+					.addGap(15))
 		);
 		getContentPane().setLayout(groupLayout);
 	}
@@ -235,18 +255,74 @@ public class MainFrame extends JFrame{
 				url = textField_URL.getText();
 				dir = textField_Dir.getText();
 				folder = textField_NewFolder.getText();
-				
+
 				if(!url.equals("")) prefs.put("URL", url);
 				if(!dir.equals("")) prefs.put("DIR", dir);
 				if(!folder.equals("")) prefs.put("FOLDER", folder);
-				if(url.equals("") || dir.equals("") || currentPath.equals("")) {
+				
+				if (chckbxConvertVtt.isSelected()) prefs.putBoolean("CONVERTVTT", true);
+				else prefs.putBoolean("CONVERTVTT", false);
+				if (chckbxMergeVideoAnd.isSelected()) prefs.putBoolean("MERGE", true);
+				else prefs.putBoolean("MERGE", false);
+				if (chckbxUseProxy.isSelected()) prefs.putBoolean("PROXY", true);
+				else prefs.putBoolean("PROXY", false);
+				if (chckbxSaveUrlTo.isSelected()) prefs.putBoolean("SAVEURL", true);
+				else prefs.putBoolean("SAVEURL", false);
+					
+				if(url.equals("") || dir.equals("") || folder.equals("")) {
 					textArea_Output.setText("Invalid Input Detected\n");
 				} else {
+					if (chckbxSaveUrlTo.isSelected() ) {
+						URL = new File(dir + File.separator + folder + File.separator + "URL.txt");
+						if(!URL.exists())
+							try {
+								URL.createNewFile();
+							} catch (IOException e) {
+								textArea_Output.append("Failed to save URL \n");
+							}
+						else {
+							try {
+								Writer w = new FileWriter(URL);
+								w.write(url);
+								w.close();
+							} catch (IOException e) {
+								textArea_Output.append("Failed to save URL \n");
+							}
+						}
+					}
 					
-					new Worker(url, "\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\"", currentPath, textArea_Output).execute();
-					//startClicked(url, "\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\"", currentPath);		
+					if (!Youtube_DL.class.isInstance(youtubedl) && chckbxMergeVideoAnd.isSelected() && chckbxUseProxy.isSelected()) {
+						youtubedl = new Youtube_DL(url, 
+								"\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\" --proxy http://127.0.0.1:1080/ --ffmpeg-location " + currentPath, 
+								textArea_Output,
+								chckbxConvertVtt.isSelected(),
+								dir + File.separator + folder);
+						youtubedl.start();
+					} else if (!Youtube_DL.class.isInstance(youtubedl) && !chckbxMergeVideoAnd.isSelected() && chckbxUseProxy.isSelected()) {
+						youtubedl = new Youtube_DL(url, 
+								"\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\" --ffmpeg-location " + currentPath, 
+								textArea_Output,
+								chckbxConvertVtt.isSelected(),
+								dir + File.separator + folder);
+						youtubedl.start();
+					} else if (!Youtube_DL.class.isInstance(youtubedl) && chckbxMergeVideoAnd.isSelected() && !chckbxUseProxy.isSelected()) {
+						youtubedl = new Youtube_DL(url,
+								"\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\" --proxy http://127.0.0.1:1080/",
+								textArea_Output,
+								chckbxConvertVtt.isSelected(),
+								dir + File.separator + folder);
+						youtubedl.start();
+					} else if (!Youtube_DL.class.isInstance(youtubedl)){
+						youtubedl = new Youtube_DL(url,
+								"\"" + dir + File.separator + folder + "\\%(title)s.%(ext)s\"",
+								textArea_Output,
+								chckbxConvertVtt.isSelected(),
+								dir + File.separator + folder);
+						youtubedl.start();
+					}
+							
 				}
-				if(chckbxConvertVtt.isSelected()) convertVttToSrt(dir + File.separator + folder, currentPath);
+				//if(chckbxConvertVtt.isSelected()) new FFmpeg(dir + File.separator + folder, currentPath, textArea_Output).start();
 			}
 		});
 		
@@ -254,12 +330,23 @@ public class MainFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(!textField_Dir.getText().equals("")) {
 					try {
-						Desktop.getDesktop().open(new File(dir));
+						Desktop.getDesktop().open(new File(dir + File.separator + folder));
 					} catch (IOException e1) {}
 				}
 				
 			}
 		});
+		
+		btnCancl.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(Youtube_DL.class.isInstance(youtubedl)) {
+					youtubedl.interrupt();
+					youtubedl = null;
+				}
+			}
+		});
+		
 	}
 	
 	/*
@@ -291,7 +378,7 @@ public class MainFrame extends JFrame{
 		
 
 	}
-	*/
+
 	private void convertVttToSrt(String newdir, String currentPath) {
 		File file = new File(newdir);
 		File[] list = file.listFiles();
@@ -318,8 +405,8 @@ public class MainFrame extends JFrame{
 				} catch (Exception e) {
 					textArea_Output.append("ERROR_FFMPEG_START_FAIL");
 					}
-                System.out.println(fil.getName());
             }
         }                                                                                                                                                         
 	}
+	*/
 }
