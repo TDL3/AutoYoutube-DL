@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.StatusBar?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TabController">
+         <children>
+            <Label fx:id="lbl_Dir" layoutX="9.0" layoutY="13.0" prefHeight="18.0" prefWidth="108.0" text="Work Directory -&gt;" AnchorPane.bottomAnchor="517.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="13.0">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_Dir" layoutX="118.0" layoutY="11.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="513.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="11.0" />
+            <TextField fx:id="textField_Folder" layoutX="118.0" layoutY="43.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="43.0" />
+            <Label fx:id="lbl_Folder" layoutX="60.0" layoutY="46.0" prefHeight="18.0" prefWidth="57.0" text="Folder -&gt;" AnchorPane.bottomAnchor="484.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="46.0">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_URL" layoutX="74.0" layoutY="78.0" prefHeight="18.0" prefWidth="45.0" text="URL -&gt;" textAlignment="JUSTIFY" AnchorPane.bottomAnchor="452.0" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="384.0" AnchorPane.topAnchor="78.0">
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textField_URL" layoutX="118.0" layoutY="75.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="449.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="75.0" />
+            <Button fx:id="btn_SelectDir" layoutX="444.0" layoutY="10.0" mnemonicParsing="false" onAction="#setDir" prefHeight="23.0" prefWidth="54.0" text="Select " AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btn_SelectFolder" layoutX="444.0" layoutY="43.0" mnemonicParsing="false" onAction="#setFolder" prefHeight="23.0" prefWidth="54.0" text="Select" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0" />
+            <TitledPane layoutY="262.0" prefHeight="261.0" prefWidth="503.0" text="Logs" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="262.0">
+               <content>
+                  <TextArea fx:id="textArea_Logs" wrapText="true">
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </TextArea>
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="9.0" layoutY="108.0" prefHeight="146.0" prefWidth="149.0" text="Youtube-DL Options" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="342.0" AnchorPane.topAnchor="108.0">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+                     <content>
+                        <VBox>
+                           <children>
+                              <CheckBox fx:id="checkBox_Single" mnemonicParsing="false" onAction="#downloedMode" text="Single video">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_List" mnemonicParsing="false" onAction="#downloedMode" text="Playlist">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_DownloadSub" layoutX="20.0" layoutY="62.0" mnemonicParsing="false" text="Subtitle">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_Thumnail" mnemonicParsing="false" text="Thumbnail">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_SaveDiscription" layoutX="20.0" layoutY="83.0" mnemonicParsing="false" text="Description">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_NoOverwrites" layoutX="20.0" layoutY="104.0" mnemonicParsing="false" text="No overwrites">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_1080P" layoutX="20.0" layoutY="120.0" mnemonicParsing="false" text="1080P MP4">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_UseProxy" layoutX="15.0" layoutY="76.0" mnemonicParsing="false" text="HTTP Local Proxy">
+                                 <padding>
+                                    <Insets bottom="3.0" />
+                                 </padding>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" top="3.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </TitledPane>
+            <TitledPane layoutX="158.0" layoutY="108.0" prefHeight="146.0" prefWidth="130.0" text="FFmpeg Options" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="108.0">
+               <content>
+                  <ScrollPane>
+                     <content>
+                        <VBox>
+                           <children>
+                              <CheckBox fx:id="checkBox_UseFFmpeg" mnemonicParsing="false" onAction="#useFFmpegClicked" text="Use FFmpeg">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_Merge" mnemonicParsing="false" prefHeight="21.0" prefWidth="109.0" text="Merge A. V.">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_Convert" mnemonicParsing="false" text="VTT to SRT" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" top="3.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </TitledPane>
+            <TitledPane layoutX="288.0" layoutY="108.0" prefHeight="146.0" prefWidth="124.0" text="Other Options" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="288.0" AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="108.0">
+               <content>
+                  <ScrollPane hbarPolicy="NEVER">
+                     <content>
+                        <VBox>
+                           <children>
+                              <CheckBox fx:id="checkBox_SaveURL" mnemonicParsing="false" text="Save URL">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </CheckBox>
+                              <CheckBox fx:id="checkBox_AutoClose" mnemonicParsing="false" text="Auto close">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" top="3.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </TitledPane>
+            <Button fx:id="btn_Cancel" layoutX="422.0" layoutY="218.0" mnemonicParsing="false" onAction="#interrruptYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Cancel" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="218.0" />
+            <Button fx:id="btn_Start" layoutX="422.0" layoutY="163.0" mnemonicParsing="false" onAction="#startYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Start" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="163.0" />
+            <Button fx:id="btn_openOutPut" layoutX="422.0" layoutY="108.0" mnemonicParsing="false" onAction="#openOutputFolder" prefHeight="36.0" prefWidth="70.0" text="Output" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="108.0" />
+      <StatusBar fx:id="statusBar_Main" layoutX="2.0" layoutY="518.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="518.0" />
+         </children>
+      </AnchorPane>

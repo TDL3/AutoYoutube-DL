@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="menuItem_NewTab" mnemonicParsing="false" onAction="#createNewTab" text="New tab (beta)" />
+                  <MenuItem fx:id="menuItem_CloseTab" mnemonicParsing="false" onAction="#closeTab" text="Close tab" />
+                  <MenuItem mnemonicParsing="false" text="Costum commends (in dev.)" />
+              <MenuItem fx:id="menuItem_Exit" mnemonicParsing="false" onAction="#exitByUser" text="Exit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="menuItem_LoadConfig" mnemonicParsing="false" onAction="#loadConfig" text="Load Config (in dev.)" />
+                  <MenuItem fx:id="menuItem_SaveConfig" mnemonicParsing="false" onAction="#saveConfig" text="Save Config to (in dev.)" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="menuItem_About" mnemonicParsing="false" onAction="#about" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <TabPane fx:id="tabPane_Main" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
