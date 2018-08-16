@@ -13,8 +13,8 @@ public class Youtube_DL extends SwingWorker<Void, Void> {
 	
 	private String outDir;  //Directory to the output folder
 	private String config;      //arguments to configure youtube-DL
-	protected TextArea textArea_Logs;
-	protected Button btn_start;
+	public TextArea textArea_Logs;
+	public Button btn_start;
 	private boolean convert;
 	private boolean autoClose;
 	private FFmpeg ffmpeg;
@@ -39,33 +39,23 @@ public class Youtube_DL extends SwingWorker<Void, Void> {
             BufferedReader input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
             String line=null;
             
-            while((line = input.readLine()) != null && !Thread.currentThread().isInterrupted()) {
-            	
+            while((line = input.readLine()) != null) {
             		textArea_Logs.appendText(line +"\n");	
             }
             input.close();
             int exitVal = youtube_dl.waitFor();
             btn_start.setDisable(false);
             textArea_Logs.appendText("[Youtube-DL]  Exited with:" + exitVal + "\n");
-
             if (convert) {
-            	ffmpeg = new FFmpeg(
-            			outDir, 
-            			textArea_Logs,
-            			autoClose,
-            			btn_start);
-            	ffmpeg.execute();
-            } else if (autoClose) {
-            	System.exit(1);
-            } else {
-
-            	btn_start.setDisable(false);
+         	  	ffmpeg = new FFmpeg(
+                			outDir, 
+                			textArea_Logs,
+                			autoClose,
+                			btn_start);
+         	  	ffmpeg.execute();
             }
-    	}
-            
-        
+    	}      
  		} catch(IOException e) {
-
  			textArea_Logs.appendText("[FATAL] ERROR_YOUTUBEDL_START_FAIL \n");
  		} catch(InterruptedException e) {
  			if(FFmpeg.class.isInstance(ffmpeg)) ffmpeg.cancel(true);
@@ -73,9 +63,14 @@ public class Youtube_DL extends SwingWorker<Void, Void> {
  		}
 		return null;	
 	}
+	
 	@Override 
 	protected void done() {
-      
+		 
+   	   if (autoClose) {
+   	        System.exit(1);
+  	   } else {
+           btn_start.setDisable(false);
+ 	   }
     }
-
 }

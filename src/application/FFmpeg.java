@@ -44,7 +44,7 @@ public class FFmpeg extends SwingWorker<Void, Void> {
                 				);       
                 		BufferedReader input = new BufferedReader(new InputStreamReader(ffmpeg.getInputStream()));
                 		String line=null;
-                		while((line=input.readLine()) != null && !Thread.currentThread().isInterrupted()) {
+                		while((line=input.readLine()) != null) {
                 			textArea_Logs.appendText(line +"\n");
                 		}
                 		input.close();
@@ -60,7 +60,11 @@ public class FFmpeg extends SwingWorker<Void, Void> {
 				}
             }
         } 
-        if (autoClose) System.exit(1);
 		return null;
+	}
+	
+	@Override
+	protected void done() {
+		if (autoClose) System.exit(1);
 	}
 }

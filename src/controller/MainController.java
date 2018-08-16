@@ -27,17 +27,19 @@ public class MainController implements Initializable {
 	@FXML private MenuItem menuItem_LoadConfig;
 	@FXML private MenuItem menuItem_SaveConfig;
 	@FXML private TabPane tabPane_Main;
-	private Stage aboutStage;
    
-	public MainController() {
-		aboutStage = new Stage();
-	}
+	public MainController() {}
 	
 	@FXML
 	private void createNewTab() throws IOException {
-		Tab tab = new Tab("Youtube-DL");
+		var tab = new Tab("Youtube-DL");
 		Parent root = FXMLLoader.load(getClass().getResource("/form/NewTab.fxml"));
 		tab.setContent(root);
+
+		tab.setOnCloseRequest(e -> {
+			//e.consume();
+			if (tabPane_Main.getTabs().size() == 1) Platform.exit();
+			});
 		tabPane_Main.getTabs().add(tab);
 		tabPane_Main.getSelectionModel().select(tab);
 		
@@ -45,7 +47,11 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void closeTab (ActionEvent event) {	
-		tabPane_Main.getTabs().remove(tabPane_Main.getSelectionModel().getSelectedItem());
+		if (tabPane_Main.getTabs().size() == 1) {
+			Platform.exit();
+		} else {
+			tabPane_Main.getTabs().remove(tabPane_Main.getSelectionModel().getSelectedItem());
+		}
 	}
 	
 	@FXML
@@ -55,16 +61,17 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void loadConfig() {
-		
+		//TODO
 	}
 	
 	@FXML
 	private void saveConfig() {
-		
+		//TODO
 	}
 	
 	@FXML
 	private void about(ActionEvent event) throws IOException {
+		var aboutStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/form/About.fxml"));
 		aboutStage.initModality(Modality.APPLICATION_MODAL);
 		aboutStage.setTitle("About AutoYoutube-DL");
