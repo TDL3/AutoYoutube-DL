@@ -15,7 +15,6 @@
 <?import org.controlsfx.control.StatusBar?>
 
 <AnchorPane minHeight="0.0" minWidth="0.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TabController">
-         <children>
             <Label fx:id="lbl_Dir" layoutX="9.0" layoutY="13.0" prefHeight="18.0" prefWidth="108.0" text="Work Directory -&gt;" AnchorPane.bottomAnchor="517.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="13.0">
                <font>
                   <Font name="Segoe UI" size="13.0" />
@@ -54,12 +53,12 @@
                      <content>
                         <VBox>
                            <children>
-                              <CheckBox fx:id="checkBox_Single" mnemonicParsing="false" onAction="#downloedMode" text="Single video">
+                              <CheckBox fx:id="checkBox_Single" mnemonicParsing="false" onAction="#downloadMode" text="Single video">
                                  <padding>
                                     <Insets bottom="5.0" />
                                  </padding>
                               </CheckBox>
-                              <CheckBox fx:id="checkBox_List" mnemonicParsing="false" onAction="#downloedMode" text="Playlist">
+                              <CheckBox fx:id="checkBox_List" mnemonicParsing="false" onAction="#downloadMode" text="Playlist">
                                  <padding>
                                     <Insets bottom="5.0" />
                                  </padding>
@@ -157,9 +156,8 @@
                   </ScrollPane>
                </content>
             </TitledPane>
-            <Button fx:id="btn_Cancel" layoutX="422.0" layoutY="218.0" mnemonicParsing="false" onAction="#interrruptYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Cancel" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="218.0" />
-            <Button fx:id="btn_Start" layoutX="422.0" layoutY="163.0" mnemonicParsing="false" onAction="#startYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Start" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="163.0" />
+            <Button fx:id="btn_Cancel" layoutX="422.0" layoutY="218.0" mnemonicParsing="false" onAction="#interruptYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Cancel" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="218.0" />
+            <Button fx:id="btn_Start" layoutX="422.0" layoutY="163.0" mnemonicParsing="false" onAction="#startClicked" prefHeight="36.0" prefWidth="70.0" text="Start" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="163.0" />
             <Button fx:id="btn_openOutPut" layoutX="422.0" layoutY="108.0" mnemonicParsing="false" onAction="#openOutputFolder" prefHeight="36.0" prefWidth="70.0" text="Output" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="108.0" />
       <StatusBar fx:id="statusBar_Main" layoutX="2.0" layoutY="518.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="518.0" />
-         </children>
       </AnchorPane>

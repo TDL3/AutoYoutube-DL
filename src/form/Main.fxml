@@ -15,7 +15,7 @@
             <items>
                   <MenuItem fx:id="menuItem_NewTab" mnemonicParsing="false" onAction="#createNewTab" text="New tab" />
                   <MenuItem fx:id="menuItem_CloseTab" mnemonicParsing="false" onAction="#closeTab" text="Close tab" />
-                  <MenuItem mnemonicParsing="false" text="Costum commends (in dev.)" />
+                  <MenuItem mnemonicParsing="false" onAction="#customArguments" text="Custom commends" />
               <MenuItem fx:id="menuItem_Exit" mnemonicParsing="false" onAction="#exitByUser" text="Exit" />
             </items>
           </Menu>

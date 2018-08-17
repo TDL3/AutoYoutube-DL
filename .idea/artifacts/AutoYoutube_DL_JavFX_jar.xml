@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AutoYoutube-DL-JavFX:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AutoYoutube_DL_JavFX_jar</output-path>
+    <root id="archive" name="AutoYoutube-DL-JavFX.jar">
+      <element id="module-output" name="AutoYoutube-DL-JavFX" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/controlsfx-9.0.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

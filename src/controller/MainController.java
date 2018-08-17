@@ -71,16 +71,29 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private void about(ActionEvent event) throws IOException {
-		var aboutStage = new Stage();
+		var about = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/form/About.fxml"));
-		aboutStage.initModality(Modality.APPLICATION_MODAL);
-		aboutStage.setTitle("About AutoYoutube-DL");
-		aboutStage.getIcons().add(new Image("/thirdparty/images/about.png"));
-		aboutStage.setScene(new Scene(root, 400, 250));
-		aboutStage.setResizable(false);
-		aboutStage.showAndWait();
+		about.initModality(Modality.APPLICATION_MODAL);
+		about.setTitle("About AutoYoutube-DL");
+		about.getIcons().add(new Image("/thirdparty/images/about.png"));
+		about.setScene(new Scene(root, 400, 250));
+		about.setResizable(false);
+		about.showAndWait();
 	}
-	
+
+	@FXML
+	private void customArguments() throws IOException {
+		var customCommends = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/form/CustomCommands.fxml"));
+		customCommends.initModality(Modality.APPLICATION_MODAL);
+		customCommends.setTitle("Custom Commands");
+		customCommends.getIcons().add(new Image("/thirdparty/images/icon.png"));
+		customCommends.setScene(new Scene(root, 400, 500));
+		customCommends.setResizable(false);
+		customCommends.showAndWait();
+
+
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

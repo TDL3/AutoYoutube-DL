@@ -14,7 +14,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("/form/Main.fxml"));
-		primaryStage.setTitle("AutoYoutube-DL 2.0.2 beta");
+		primaryStage.setTitle("AutoYoutube-DL 2.1.2 beta");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/thirdparty/images/icon.png")));
 		primaryStage.setScene(new Scene(root, 500, 600));
 		primaryStage.setResizable(false);

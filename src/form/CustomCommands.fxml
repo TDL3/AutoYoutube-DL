@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomArgumentsController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="375.0" text="Write your custom arguments, each command ">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="36.0" prefHeight="22.0" prefWidth="375.0" text="must separated by a newline">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="79.0" text="Custom Youtube-DL Arguments" />
+      <TextArea fx:id="textArea_customYoutube_DL_Arguments" layoutX="14.0" layoutY="101.0" onMouseExited="#saveCustomYoutube_DL_Arguments" prefHeight="390.0" prefWidth="375.0" />
+   </children>
+</AnchorPane>

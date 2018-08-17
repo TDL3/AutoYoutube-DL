@@ -1,16 +1,7 @@
 package controller;
 
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Writer;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,8 +16,6 @@ import org.controlsfx.control.StatusBar;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,23 +100,17 @@ public final class TabController implements Initializable {
 	private String currentPath; // directory where program is located
 
 	private Properties props; // used to save user defined data to a xml file
-
-	private File URL; // txt file used to save url
-	private File newFolder; // create directory that user defined to save youtube-dl downloads
 	private File config; // xml file used to save props
+    private File customCommands;
 
-	// Reference of Youtube_DL class
-	// private Youtube_DL youtubedl;
-	//private Thread youtube_dl = null;
-	// private Thread ffmpeg = null;
 	private Task<Void> ffmpeg;
 	private Task<Void> youtube_dl;
-	
 	
 	public TabController() {
 		currentPath = System.getProperty("user.dir");
 		props = new Properties();
 		config = new File(currentPath + File.separator + "config.xml");
+        customCommands = new File(System.getProperty("user.dir") + File.separator + "customCommands.txt");
 	}
 
 	@FXML
@@ -147,7 +130,7 @@ public final class TabController implements Initializable {
 	}
 
 	@FXML
-	private void setFolder(ActionEvent event) throws IOException {
+	private void setFolder(ActionEvent event) {
 
 		Stage stage = Stage.class.cast(Control.class.cast(event.getSource()).getScene().getWindow());
 		DirectoryChooser chooser = new DirectoryChooser();
@@ -163,7 +146,7 @@ public final class TabController implements Initializable {
 	}
 
 	@FXML
-	private void startYoutube_DL(ActionEvent event) {
+	private void startClicked() {
 
 		url = textField_URL.getText();
 		dir = textField_Dir.getText();
@@ -221,7 +204,6 @@ public final class TabController implements Initializable {
 		setConfig();
 		// validate textFields' data format are correct
 		if (validateInput(dir, folder, url)) {
-			statusBar_Main.setText("");
 			btn_Start.setDisable(true);
 			props.setProperty("Url", url);
 			props.setProperty("Dir", dir);
@@ -229,12 +211,12 @@ public final class TabController implements Initializable {
 			setConfig();
 
 			//create user specified folder
-			newFolder = new File(dir + File.separator + folder);
+			var newFolder = new File(dir + File.separator + folder);
 			if (!newFolder.exists())
 				newFolder.mkdir();
 			if (checkBox_SaveURL.isSelected()) {
 			//save url from textField to URL.txt
-				URL = new File(dir + File.separator + folder + File.separator + "URL.txt");
+				var URL = new File(dir + File.separator + folder + File.separator + "URL.txt");
 				if (!URL.exists())
 					try {
 						URL.createNewFile();
@@ -246,103 +228,121 @@ public final class TabController implements Initializable {
 					}
 			}
 			// if condition above is matched use Task to start youtube-dl
-			var messageQueue = new LinkedBlockingQueue<String>();
-			youtube_dl = new Task<Void>() {
-				@Override
-				public Void call() throws Exception {
-					// final int numMessages = 300 ;
-					Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
-					textArea_Logs.setText("[Youtube-DL] Starting Youtube-dl \n");
-					try {
-						synchronized (this) {
-							Runtime rt = Runtime.getRuntime();
-							Process youtube_dl = rt.exec(youtube_dl_Parameters(), null, new File("/"));
-							BufferedReader input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
-							String line = null;
-
-							while ((line = input.readLine()) != null && !Thread.currentThread().isInterrupted()) {
-								messageQueue.put(line);
-							}
-							input.close();
-							int exitVal = youtube_dl.waitFor();
-							btn_Start.setDisable(false);
-							textArea_Logs.appendText("[Youtube-DL]  Exited with:" + exitVal + "\n");
-							if (checkBox_Convert.isSelected()) {
-								ffmpeg = new Task<Void>() {
-									@Override
-									public Void call() throws Exception {
-										var list = new File(dir + File.separator + folder).listFiles();
-										Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
-										if (list != null)
-											for (File f : list) {
-												if (f.getName().endsWith((".vtt"))) {
-													try {
-														synchronized (this) {
-															textArea_Logs.appendText("[FFmpeg] Starting FFmpeg \n");
-															Runtime rt = Runtime.getRuntime();
-															Process ffmpeg = rt.exec("ffmpeg.exe -n -i " + "\"" + dir
-																	+ File.separator + folder + File.separator
-																	+ f.getName() + "\" " + "\"" + dir + File.separator
-																	+ folder + File.separator
-																	+ f.getName().substring(0, f.getName().length() - 4)
-																	+ ".srt" + "\"", null, new File("/"));
-															BufferedReader input = new BufferedReader(
-																	new InputStreamReader(ffmpeg.getInputStream()));
-															String line = null;
-															while ((line = input.readLine()) != null) {
-																textArea_Logs.appendText(line + "\n");
-															}
-															input.close();
-															int exitVal = ffmpeg.waitFor();
-															textArea_Logs.appendText(
-																	"[FFmpeg] Exited with: " + exitVal + "\n");
-															btn_Start.setDisable(false);
-														}
-
-													} catch (IOException e) {
-														textArea_Logs.appendText("[FATAL] FAILED_TO_START_FFMPEG \n");
-													} catch (InterruptedException e) {
-														textArea_Logs.appendText("[AutoYoutube-DL] INTERRUPTED_BY_USER \n");
-													}
-												}
-											}
-										return null;
-									}
-								};
-								new Thread(ffmpeg).start();
-							} else if (checkBox_AutoClose.isSelected()) {
-								System.exit(1);
-							} else {
-								btn_Start.setDisable(false);
-							}
-						}
-					} catch (IOException e) {
-						textArea_Logs.appendText("[FATAL] ERROR_YOUTUBEDL_START_FAIL \n");
-					} catch (InterruptedException e) {
-						 if(Task.class.isInstance(ffmpeg)) ffmpeg.cancel();
-						textArea_Logs.appendText("[Youtube-DL] INTERRUPTED_BY_USER \n");
-					}
-					return null;
-				}
-			};
-			new Thread(youtube_dl).start();
-//			 youtubedl = new Youtube_DL(
-//					btn_Start,
-//					youtube_dlParameters(), 
-//					textArea_Logs,
-//					checkBox_Convert.isSelected(),
-//					checkBox_AutoClose.isSelected(),
-//					dir + File.separator + folder);
-//				youtubedl.start();
+            startYoutube_DL();
 		}
 	}
 
+	private void startYoutube_DL() {
+        var messageQueue = new LinkedBlockingQueue<String>();
+        textArea_Logs.clear();
+        youtube_dl = new Task<>() {
+            @Override
+            public Void call() {
+                //updateProgress(50,100);
+                // final int numMessages = 300 ;
+                Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
+                try {
+                    messageQueue.put("[Youtube-DL] Starting Youtube-dl \n");
+                    synchronized (this) {
+                        Runtime rt = Runtime.getRuntime();
+                        Process youtube_dl = rt.exec(youtube_dl_Parameters(), null, new File("/"));
+                        BufferedReader input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
+                        updateMessage("[Youtube-DL] Youtube-dl is running");
+                        String line;
+                        while ((line = input.readLine()) != null && !Thread.currentThread().isInterrupted()) {
+                            if(line.contains("%")) {
+                                var percent = Double.parseDouble(line.substring(line.indexOf("%")-4, line.indexOf("%")));
+                                updateProgress(percent, 100.0);
+                            }
+                            messageQueue.put(line);
+                        }
+                        input.close();
+                        int exitVal = youtube_dl.waitFor();
+                        btn_Start.setDisable(false);
+                        updateMessage("[Youtube-DL] Finished | Exist code:" + exitVal);
+                        //textArea_Logs.appendText("[Youtube-DL] Finished | Exist code:" + exitVal + "\n");
+                        messageQueue.put("[Youtube-DL] Finished | Exist code:" + exitVal + "\n");
+
+                        if (checkBox_Convert.isSelected()) {
+                            startFFmpeg();
+                        } else if (checkBox_AutoClose.isSelected()) {
+                            System.exit(1);
+                        } else {
+                            btn_Start.setDisable(false);
+                        }
+                    }
+                } catch (IOException e) {
+                    updateMessage("[FATAL] ERROR_YOUTUBEDL_START_FAIL");
+                    //textArea_Logs.appendText("[FATAL] ERROR_YOUTUBEDL_START_FAIL \n");
+                } catch (InterruptedException e) {
+                    //if(Task.class.isInstance(ffmpeg)) ffmpeg.cancel();
+                    updateMessage("[Youtube-DL] CANCELED_BY_USER");
+                    //textArea_Logs.appendText("[Youtube-DL] INTERRUPTED_BY_USER \n");
+                }
+                return null;
+            }
+        };
+        statusBar_Main.textProperty().bind(youtube_dl.messageProperty());
+        statusBar_Main.progressProperty().bind(youtube_dl.progressProperty());
+        new Thread(youtube_dl).start();
+    }
+
+    private void startFFmpeg() {
+        var messageQueue = new LinkedBlockingQueue<String>();
+
+        ffmpeg = new Task<>() {
+            @Override
+            public Void call() {
+                var list = new File(dir + File.separator + folder).listFiles();
+                Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
+                if (list != null)
+                    for (File f : list) {
+                    if (f.getName().endsWith((".vtt"))) {
+                        try {
+                            synchronized (this) {
+                                //updateMessage("[FFmpeg] Starting FFmpeg");
+                                textArea_Logs.appendText("[FFmpeg] Converting SRT formatted subtitle(s) to VTT format\n");
+                                Runtime rt = Runtime.getRuntime();
+                                Process ffmpeg = rt.exec("ffmpeg.exe -n -i " + "\"" + dir
+                                        + File.separator + folder + File.separator
+                                        + f.getName() + "\" " + "\"" + dir + File.separator
+                                        + folder + File.separator
+                                        + f.getName().substring(0, f.getName().length() - 4)
+                                        + ".srt" + "\"", null, new File("/"));
+                                //updateMessage("[FFmpeg] FFmpeg is running");
+                                BufferedReader input = new BufferedReader(
+                                        new InputStreamReader(ffmpeg.getInputStream()));
+                                String line;
+                                while ((line = input.readLine()) != null) {
+                                    messageQueue.put(line);
+                                }
+                                input.close();
+                                int exitVal = ffmpeg.waitFor();
+                                textArea_Logs.appendText( "[FFmpeg] Finished | Exist code: " + exitVal + "\n");
+                                //updateMessage("[FFmpeg] Finished | Exist code: " + exitVal);
+                                btn_Start.setDisable(false);
+                                }
+                        } catch (IOException e) {
+                            //updateMessage("[FATAL] FAILED_TO_START_FFMPEG");
+                            textArea_Logs.appendText("[FATAL] FAILED_TO_START_FFMPEG \n");
+                        } catch (InterruptedException e) {
+                            //updateMessage("[AutoYoutube-DL] CANCELED_BY_USER");
+                            textArea_Logs.appendText("[AutoYoutube-DL] INTERRUPTED_BY_USER \n");
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+        new Thread(ffmpeg).start();
+	}
+
 	@FXML
-	private void interrruptYoutube_DL() {
+	private void interruptYoutube_DL() {
 		if (Task.class.isInstance(youtube_dl)) {
 			youtube_dl.cancel();
 			youtube_dl = null;
-			btn_Start.setDisable(false);
+            btn_Start.setDisable(false);
 		}
 	}
 
@@ -366,7 +366,7 @@ public final class TabController implements Initializable {
 	}
 
 	@FXML
-	private void downloedMode(ActionEvent event) {
+	private void downloadMode(ActionEvent event) {
 		if (event.getSource().equals(checkBox_Single)) {
 			if (checkBox_Single.isSelected()) {
 				checkBox_List.setSelected(false);
@@ -383,8 +383,20 @@ public final class TabController implements Initializable {
 	}
 
 	private String youtube_dl_Parameters() {
-		String youtubedlConfig = "youtube-dl.exe ";
-		// String youtubedlConfig = currentPath + File.separator + "youtube-dl.exe";
+		var youtubedlConfig = "youtube-dl.exe ";
+        try {
+            if (!customCommands.exists()){
+                customCommands.createNewFile();
+            }
+            var input = new BufferedReader(new FileReader(customCommands));
+            String line;
+            while((line = input.readLine()) != null) {
+                youtubedlConfig += line;
+            }
+            input.close();
+        } catch (IOException e) {
+            textArea_Logs.appendText("[AutoYoutube-DL] customCommands.txt can not be found, automatically created one");
+        }
 		if (checkBox_DownloadSub.isSelected())
 			youtubedlConfig += " --write-auto-sub --write-sub --sub-format vtt";
 		if (checkBox_SaveDiscription.isSelected())
@@ -411,6 +423,8 @@ public final class TabController implements Initializable {
 	}
 
 	private boolean validateInput(String dir, String folder, String url) {
+        statusBar_Main.textProperty().unbind();
+        statusBar_Main.progressProperty().unbind();
 
 		/// \\ : * ? \" < > |
 		// ^(\w+\.?)*\w+$ Folder name regex
@@ -428,21 +442,26 @@ public final class TabController implements Initializable {
 			lbl_Dir.setTextFill(Color.web("#000000"));
 			statusBar_Main.setText("");
 		}
-		if (folder == null || folder.equals("")
+		/*
+		* "# Match a valid Windows filename (unspecified file system).                   \n"
+			+ "^                                                        # Anchor to start of string.        \n"
+			+ "(?!                                              # Assert filename is not: CON, PRN, \n"
+			+ "  (?:                                 # AUX, NUL, COM1, COM2, COM3, COM4, \n"
+			+ "    CON|PRN|AUX|NUL|      # COM5, COM6, COM7, COM8, COM9,     \n"
+			+ "    COM[1-9]|LPT[1-9]                 # LPT1, LPT2, LPT3, LPT4, LPT5,     \n"
+			+ "  )                                              # LPT6, LPT7, LPT8, and LPT9...      \n"
+			+ "  (?:\\.[^.]*)?                                   # followed by optional extension     \n"
+			+ "  $                                                      # and end of string                  \n"
+			+ ")                                                # End negative lookahead assertion. \n"
+			+ "[^<>:\"/\\\\|?*\\x00-\\x1F]*              # Zero or more valid filename chars.\n"
+			+ "[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]              # Last char is not a space or dot.  \n"
+			+ "$                                                        # Anchor to end of string.           ",
+			Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.COMMENTS).matcher(folder).matches()
+		* */
+		if (folder == null
+                || folder.equals("")
 				|| !Pattern.compile(
-						"# Match a valid Windows filename (unspecified file system).                   \n"
-						+ "^                                                        # Anchor to start of string.        \n"
-						+ "(?!                                              # Assert filename is not: CON, PRN, \n"
-						+ "  (?:                                 # AUX, NUL, COM1, COM2, COM3, COM4, \n"
-						+ "    CON|PRN|AUX|NUL|      # COM5, COM6, COM7, COM8, COM9,     \n"
-						+ "    COM[1-9]|LPT[1-9]                 # LPT1, LPT2, LPT3, LPT4, LPT5,     \n"
-						+ "  )                                              # LPT6, LPT7, LPT8, and LPT9...      \n"
-						+ "  (?:\\.[^.]*)?                                   # followed by optional extension     \n"
-						+ "  $                                                      # and end of string                  \n"
-						+ ")                                                # End negative lookahead assertion. \n"
-						+ "[^<>:\"/\\\\|?*\\x00-\\x1F]*              # Zero or more valid filename chars.\n"
-						+ "[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]              # Last char is not a space or dot.  \n"
-						+ "$                                                        # Anchor to end of string.           ",
+						"^(?!(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\.[^.]*)?$)[^<>:\"/\\\\|?*\\x00-\\x1F]*[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]$",
 						Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.COMMENTS).matcher(folder).matches()) {
 			lbl_Folder.setTextFill(Color.web("#f44b42"));
 			FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_Folder);
@@ -458,10 +477,10 @@ public final class TabController implements Initializable {
 			statusBar_Main.setText("");
 		}
 		// use URL class to validate url
-		URL u = null;
 		try {
-			u = new URL(url);
-		} catch (MalformedURLException e) {
+			URL u = new URL(url);
+            u.toURI();
+		} catch (Exception e) {
 			lbl_URL.setTextFill(Color.web("#f44b42"));
 			FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_URL);
 			fadeTransition.setFromValue(0.5);
@@ -472,19 +491,7 @@ public final class TabController implements Initializable {
 			statusBar_Main.setText("INVALID URL");
 			return false;
 		}
-		try {
-			u.toURI();
-		} catch (URISyntaxException e) {
-			lbl_URL.setTextFill(Color.web("#f44b42"));
-			FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_URL);
-			fadeTransition.setFromValue(0.5);
-			fadeTransition.setToValue(1);
-			fadeTransition.setCycleCount(1);
-			fadeTransition.setAutoReverse(true);
-			fadeTransition.play();
-			statusBar_Main.setText("INVALID URL");
-			return false;
-		}
+
 		lbl_URL.setTextFill(Color.web("#000000"));
 		statusBar_Main.setText("");
 
@@ -543,17 +550,11 @@ public final class TabController implements Initializable {
 			}
 		} else {
 			try {
-				config.createNewFile();
-			} catch (IOException e) {
+                if (config.createNewFile()) {
+                    textArea_Logs.appendText("[AutoYoutube-DL] Failed to find an existing configuration file, automatically created a new one\n");
+                }
+            } catch (IOException e) {
 				textArea_Logs.appendText("[AutoYoutube-DL] Failed to create config.xml, your settings will not be saved\n");
-			} finally {
-				if (input != null) {
-					try {
-						input.close();
-					} catch (IOException e) {
-						textArea_Logs.appendText("[AutoYoutube-DL] Unkown Error occured during read configration file\n");
-					}
-				}
 			}
 		}
 	}
@@ -561,7 +562,9 @@ public final class TabController implements Initializable {
 	private void setConfig() {
 		OutputStream output = null;
 		try {
-			config.createNewFile();
+            if (config.createNewFile()) {
+                textArea_Logs.appendText("[AutoYoutube-DL] Failed to find an existing configuration file, automatically created a new one\n");
+            }
 			output = new FileOutputStream(config);
 			props.storeToXML(output, null, "UTF-8");
 		} catch (IOException e) {
@@ -588,13 +591,7 @@ public final class TabController implements Initializable {
 		url = textField_URL.getText();
 		dir = textField_Dir.getText();
 		folder = textField_Folder.getText();
-		textArea_Logs.textProperty().addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				textArea_Logs.setScrollTop(Double.MAX_VALUE); // this will scroll to the bottom
-				// use Double.MIN_VALUE to scroll to the top
-			}
-		});
+		textArea_Logs.textProperty().addListener(e -> textArea_Logs.setScrollTop(Double.MAX_VALUE));
 		statusBar_Main.setText("Ready");
 	}
 }
