@@ -2,8 +2,6 @@ package controller;
 
 import java.awt.Desktop;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -58,7 +56,7 @@ public final class TabController implements Initializable {
 	@FXML
 	private CheckBox checkBox_DownloadSub;
 	@FXML
-	private CheckBox checkBox_SaveDiscription;
+	private CheckBox checkBox_SaveDescription;
 	@FXML
 	private CheckBox checkBox_NoOverwrites;
 	@FXML
@@ -80,7 +78,7 @@ public final class TabController implements Initializable {
 	@FXML
 	private CheckBox checkBox_AutoClose;
 	@FXML
-	private CheckBox checkBox_Thumnail;
+	private CheckBox checkBox_Thumbnail;
 
 	@FXML
 	private Label lbl_Dir;
@@ -180,7 +178,7 @@ public final class TabController implements Initializable {
 			props.setProperty("UseFFmpeg", "true");
 		else
 			props.setProperty("UseFFmpeg", "false");
-		if (checkBox_Thumnail.isSelected())
+		if (checkBox_Thumbnail.isSelected())
 			props.setProperty("Thumnail", "true");
 		else
 			props.setProperty("Thumnail", "false");
@@ -196,7 +194,7 @@ public final class TabController implements Initializable {
 			props.setProperty("NoOverwrites", "true");
 		else
 			props.setProperty("NoOverwrites", "false");
-		if (checkBox_SaveDiscription.isSelected())
+		if (checkBox_SaveDescription.isSelected())
 			props.setProperty("SaveDiscription", "true");
 		else
 			props.setProperty("SaveDiscription", "false");
@@ -238,8 +236,6 @@ public final class TabController implements Initializable {
         youtube_dl = new Task<>() {
             @Override
             public Void call() {
-                //updateProgress(50,100);
-                // final int numMessages = 300 ;
                 Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
                 try {
                     messageQueue.put("[Youtube-DL] Starting Youtube-dl \n");
@@ -260,7 +256,6 @@ public final class TabController implements Initializable {
                         int exitVal = youtube_dl.waitFor();
                         btn_Start.setDisable(false);
                         updateMessage("[Youtube-DL] Finished | Exist code:" + exitVal);
-                        //textArea_Logs.appendText("[Youtube-DL] Finished | Exist code:" + exitVal + "\n");
                         messageQueue.put("[Youtube-DL] Finished | Exist code:" + exitVal + "\n");
 
                         if (checkBox_Convert.isSelected()) {
@@ -289,7 +284,6 @@ public final class TabController implements Initializable {
 
     private void startFFmpeg() {
         var messageQueue = new LinkedBlockingQueue<String>();
-
         ffmpeg = new Task<>() {
             @Override
             public Void call() {
@@ -399,7 +393,7 @@ public final class TabController implements Initializable {
         }
 		if (checkBox_DownloadSub.isSelected())
 			youtubedlConfig += " --write-auto-sub --write-sub --sub-format vtt";
-		if (checkBox_SaveDiscription.isSelected())
+		if (checkBox_SaveDescription.isSelected())
 			youtubedlConfig += " --write-description";
 		if (checkBox_NoOverwrites.isSelected())
 			youtubedlConfig += "  --no-overwrites";
@@ -411,7 +405,7 @@ public final class TabController implements Initializable {
 			youtubedlConfig += " --no-playlist";
 		if (checkBox_List.isSelected())
 			youtubedlConfig += " --yes-playlist";
-		if (checkBox_SaveDiscription.isSelected())
+		if (checkBox_SaveDescription.isSelected())
 			youtubedlConfig += " --write-description";
 		if (checkBox_Merge.isSelected())
 			youtubedlConfig += " --ffmpeg-location " + "\"" + currentPath + "\"";
@@ -511,7 +505,7 @@ public final class TabController implements Initializable {
 				if (props.getProperty("DownloadSub").equals(True))
 					checkBox_DownloadSub.setSelected(true);
 				if (props.getProperty("SaveDiscription").equals(True))
-					checkBox_SaveDiscription.setSelected(true);
+					checkBox_SaveDescription.setSelected(true);
 				if (props.getProperty("1080P").equals(True))
 					checkBox_1080P.setSelected(true);
 				if (props.getProperty("NoOverwrites").equals(True))
@@ -519,7 +513,7 @@ public final class TabController implements Initializable {
 				if (props.getProperty("AutoClose").equals(True))
 					checkBox_AutoClose.setSelected(true);
 				if (props.getProperty("Thumnail").equals(True))
-					checkBox_Thumnail.setSelected(true);
+					checkBox_Thumbnail.setSelected(true);
 				if (props.getProperty("Single").equals(True)) {
 					checkBox_Single.setSelected(true);
 					checkBox_List.setSelected(false);

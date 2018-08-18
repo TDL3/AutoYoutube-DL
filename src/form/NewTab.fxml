@@ -20,8 +20,14 @@
                   <Font name="Segoe UI" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="textField_Dir" layoutX="118.0" layoutY="11.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="513.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="11.0" />
-            <TextField fx:id="textField_Folder" layoutX="118.0" layoutY="43.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="43.0" />
+            <TextField fx:id="textField_Dir" layoutX="118.0" layoutY="11.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="513.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="11.0">
+                <font>
+                   <Font name="Segoe UI" size="12.0" />
+                </font></TextField>
+            <TextField fx:id="textField_Folder" layoutX="118.0" layoutY="43.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="43.0" >
+               <font>
+                  <Font name="Segoe UI" size="12.0" />
+               </font></TextField>
             <Label fx:id="lbl_Folder" layoutX="60.0" layoutY="46.0" prefHeight="18.0" prefWidth="57.0" text="Folder -&gt;" AnchorPane.bottomAnchor="484.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="46.0">
                <font>
                   <Font name="Segoe UI" size="13.0" />
@@ -33,9 +39,9 @@
                </font>
             </Label>
             <TextField fx:id="textField_URL" layoutX="118.0" layoutY="75.0" prefHeight="23.0" prefWidth="321.0" AnchorPane.bottomAnchor="449.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="75.0">
-         <font>
-            <Font name="Microsoft YaHei" size="11.0" />
-         </font></TextField>
+               <font>
+                  <Font name="Segoe UI" size="12.0" />
+               </font></TextField>
             <Button fx:id="btn_SelectDir" layoutX="444.0" layoutY="10.0" mnemonicParsing="false" onAction="#setDir" prefHeight="23.0" prefWidth="54.0" text="Select " AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0" />
             <Button fx:id="btn_SelectFolder" layoutX="444.0" layoutY="43.0" mnemonicParsing="false" onAction="#setFolder" prefHeight="23.0" prefWidth="54.0" text="Select" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0" />
             <TitledPane layoutY="262.0" prefHeight="261.0" prefWidth="503.0" text="Logs" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="262.0">
@@ -68,12 +74,12 @@
                                     <Insets bottom="5.0" />
                                  </padding>
                               </CheckBox>
-                              <CheckBox fx:id="checkBox_Thumnail" mnemonicParsing="false" text="Thumbnail">
+                              <CheckBox fx:id="checkBox_Thumbnail" mnemonicParsing="false" text="Thumbnail">
                                  <VBox.margin>
                                     <Insets bottom="5.0" />
                                  </VBox.margin>
                               </CheckBox>
-                              <CheckBox fx:id="checkBox_SaveDiscription" layoutX="20.0" layoutY="83.0" mnemonicParsing="false" text="Description">
+                              <CheckBox fx:id="checkBox_SaveDescription" layoutX="20.0" layoutY="83.0" mnemonicParsing="false" text="Description">
                                  <padding>
                                     <Insets bottom="5.0" />
                                  </padding>

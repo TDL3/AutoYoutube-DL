@@ -1,11 +1,16 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
+import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 
 public class CustomArgumentsController implements Initializable {
@@ -25,6 +30,13 @@ public class CustomArgumentsController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void openLink(ActionEvent event) throws IOException, URISyntaxException {
+        Hyperlink link;
+        link = Hyperlink.class.cast(event.getSource());
+        Desktop.getDesktop().browse(new URL(link.getText()).toURI());
     }
 
     @Override
