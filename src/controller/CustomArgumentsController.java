@@ -19,7 +19,8 @@ public class CustomArgumentsController implements Initializable {
 
     private File customCommands = new File(System.getProperty("user.dir") + File.separator + "customCommands.txt");
 
-    public CustomArgumentsController() {}
+    public CustomArgumentsController() {
+    }
 
     @FXML
     private void saveCustomYoutube_DL_Arguments() {
@@ -35,13 +36,13 @@ public class CustomArgumentsController implements Initializable {
     @FXML
     private void openLink(ActionEvent event) throws IOException, URISyntaxException {
         Hyperlink link;
-        link = Hyperlink.class.cast(event.getSource());
+        link = (Hyperlink) event.getSource();
         Desktop.getDesktop().browse(new URL(link.getText()).toURI());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(!customCommands.exists()) {
+        if (!customCommands.exists()) {
             try {
                 customCommands.createNewFile();
             } catch (IOException e) {
@@ -50,9 +51,10 @@ public class CustomArgumentsController implements Initializable {
         } else {
             try {
                 var input = new BufferedReader(new FileReader(customCommands));
-                var buffer = new char[(int)customCommands.length()];
+                var buffer = new char[(int) customCommands.length()];
                 input.read(buffer);
                 input.close();
+                textArea_customYoutube_DL_Arguments.clear();
                 textArea_customYoutube_DL_Arguments.appendText(new String(buffer));
             } catch (Exception e) {
                 textArea_customYoutube_DL_Arguments.setText("[FATAL] customCommands.txt appears to be not readable");

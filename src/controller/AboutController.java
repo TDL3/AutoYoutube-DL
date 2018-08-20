@@ -12,12 +12,12 @@ import javafx.scene.control.Hyperlink;
 
 public class AboutController {
 
-	public AboutController() {}
-	
-	@FXML
-	private void openLink(ActionEvent event) throws IOException, URISyntaxException {
-		Hyperlink link;
-		link = Hyperlink.class.cast(event.getSource());
-		Desktop.getDesktop().browse(new URL(link.getText()).toURI());
-	}
+    public AboutController() {
+    }
+
+    @FXML
+    private void openLink(ActionEvent event) throws IOException, URISyntaxException {
+        Hyperlink link = (Hyperlink) event.getSource();
+        Desktop.getDesktop().browse(new URL(link.getText()).toURI());
+    }
 }

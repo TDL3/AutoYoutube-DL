@@ -21,8 +21,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="menuItem_LoadConfig" mnemonicParsing="false" onAction="#loadConfig" text="Load Config (in dev.)" />
-                  <MenuItem fx:id="menuItem_SaveConfig" mnemonicParsing="false" onAction="#saveConfig" text="Save Config to (in dev.)" />
+              <MenuItem fx:id="menuItem_LoadConfig" mnemonicParsing="false" onAction="#loadConfig" text="Load Config" />
+                  <MenuItem fx:id="menuItem_SaveConfig" mnemonicParsing="false" onAction="#saveConfig" text="Save Config to" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

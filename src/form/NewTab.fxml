@@ -42,8 +42,8 @@
                <font>
                   <Font name="Segoe UI" size="12.0" />
                </font></TextField>
-            <Button fx:id="btn_SelectDir" layoutX="444.0" layoutY="10.0" mnemonicParsing="false" onAction="#setDir" prefHeight="23.0" prefWidth="54.0" text="Select " AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0" />
-            <Button fx:id="btn_SelectFolder" layoutX="444.0" layoutY="43.0" mnemonicParsing="false" onAction="#setFolder" prefHeight="23.0" prefWidth="54.0" text="Select" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0" />
+            <Button layoutX="444.0" layoutY="10.0" mnemonicParsing="false" onAction="#setDir" prefHeight="23.0" prefWidth="54.0" text="Select " AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0" />
+            <Button layoutX="444.0" layoutY="43.0" mnemonicParsing="false" onAction="#setFolder" prefHeight="23.0" prefWidth="54.0" text="Select" AnchorPane.bottomAnchor="481.0" AnchorPane.leftAnchor="444.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0" />
             <TitledPane layoutY="262.0" prefHeight="261.0" prefWidth="503.0" text="Logs" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="262.0">
                <content>
                   <TextArea fx:id="textArea_Logs" wrapText="true">
@@ -162,8 +162,8 @@
                   </ScrollPane>
                </content>
             </TitledPane>
-            <Button fx:id="btn_Cancel" layoutX="422.0" layoutY="218.0" mnemonicParsing="false" onAction="#interruptYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Cancel" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="218.0" />
+            <Button layoutX="422.0" layoutY="218.0" mnemonicParsing="false" onAction="#interruptYoutube_DL" prefHeight="36.0" prefWidth="70.0" text="Cancel" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="218.0" />
             <Button fx:id="btn_Start" layoutX="422.0" layoutY="163.0" mnemonicParsing="false" onAction="#startClicked" prefHeight="36.0" prefWidth="70.0" text="Start" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="163.0" />
-            <Button fx:id="btn_openOutPut" layoutX="422.0" layoutY="108.0" mnemonicParsing="false" onAction="#openOutputFolder" prefHeight="36.0" prefWidth="70.0" text="Output" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="108.0" />
+            <Button layoutX="422.0" layoutY="108.0" mnemonicParsing="false" onAction="#openOutputFolder" prefHeight="36.0" prefWidth="70.0" text="Output" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="108.0" />
       <StatusBar fx:id="statusBar_Main" layoutX="2.0" layoutY="518.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="518.0" />
       </AnchorPane>
