@@ -50,25 +50,35 @@ public final class TabController implements Initializable {
     @FXML
     private CheckBox checkBox_NoOverwrites;
     @FXML
-    private CheckBox checkBox_1080P;
-    @FXML
     private CheckBox checkBox_UseProxy;
-    @FXML
-    private CheckBox checkBox_Single;
-    @FXML
-    private CheckBox checkBox_List;
     @FXML
     private CheckBox checkBox_UseFFmpeg;
     @FXML
-    private CheckBox checkBox_Merge;
+    private CheckBox checkBox_NoMerge;
     @FXML
     private CheckBox checkBox_Convert;
     @FXML
     private CheckBox checkBox_SaveURL;
     @FXML
-    private CheckBox checkBox_AutoClose;
-    @FXML
     private CheckBox checkBox_Thumbnail;
+
+    @FXML
+    private RadioButton radioButton_Single;
+    @FXML
+    private RadioButton radioButton_Playlist;
+    @FXML
+    private RadioButton radioButton_720P_MP4;
+    @FXML
+    private RadioButton radioButton_1080P_MP4;
+    @FXML
+    private RadioButton radioButton_HighestQuality;
+    @FXML
+    private RadioButton radioButton_Custom;
+
+    @FXML
+    private ToggleGroup videoQuality;
+    @FXML
+    private ToggleGroup downloadMode;
 
     @FXML
     private Label lbl_Dir;
@@ -143,10 +153,10 @@ public final class TabController implements Initializable {
             props.setProperty("Convert", "true");
         else
             props.setProperty("Convert", "false");
-        if (checkBox_Merge.isSelected())
-            props.setProperty("Merge", "true");
+        if (checkBox_NoMerge.isSelected())
+            props.setProperty("NoMerge", "true");
         else
-            props.setProperty("Merge", "false");
+            props.setProperty("NoMerge", "false");
         if (checkBox_UseProxy.isSelected())
             props.setProperty("UseProxy", "true");
         else
@@ -155,14 +165,10 @@ public final class TabController implements Initializable {
             props.setProperty("SaveURL", "true");
         else
             props.setProperty("SaveURL", "false");
-        if (checkBox_AutoClose.isSelected())
-            props.setProperty("AutoClose", "true");
+        if (radioButton_Playlist.isSelected())
+            props.setProperty("Playlist", "true");
         else
-            props.setProperty("AutoClose", "false");
-        if (checkBox_Single.isSelected())
-            props.setProperty("Single", "true");
-        else
-            props.setProperty("Single", "false");
+            props.setProperty("Playlist", "false");
         if (checkBox_UseFFmpeg.isSelected())
             props.setProperty("UseFFmpeg", "true");
         else
@@ -171,10 +177,27 @@ public final class TabController implements Initializable {
             props.setProperty("Thumbnail", "true");
         else
             props.setProperty("Thumbnail", "false");
-        if (checkBox_1080P.isSelected())
-            props.setProperty("1080P", "true");
-        else
-            props.setProperty("1080P", "false");
+        if (radioButton_720P_MP4.isSelected())
+            props.setProperty("720P_MP4", "true");
+        else {
+            props.setProperty("720P_MP4", "false");
+            if (radioButton_1080P_MP4.isSelected())
+                props.setProperty("1080P_MP4", "true");
+            else {
+                props.setProperty("1080P_MP4", "false");
+                if (radioButton_HighestQuality.isSelected())
+                    props.setProperty("HighestQuality", "true");
+                else {
+                    props.setProperty("HighestQuality", "false");
+                    if (radioButton_Custom.isSelected())
+                        props.setProperty("Custom", "true");
+                    else
+                        props.setProperty("Custom", "false");
+                }
+
+            }
+
+        }
         if (checkBox_DownloadSub.isSelected())
             props.setProperty("DownloadSub", "true");
         else
@@ -207,7 +230,7 @@ public final class TabController implements Initializable {
                 if (!URL.exists())
                     try {
                         URL.createNewFile();
-                        Writer w = new FileWriter(URL);
+                        var w = new FileWriter(URL);
                         w.write(url);
                         w.close();
                     } catch (IOException e) {
@@ -229,9 +252,9 @@ public final class TabController implements Initializable {
                 try {
                     messageQueue.put("[Youtube-DL] Starting Youtube-dl \n");
                     synchronized (this) {
-                        Runtime rt = Runtime.getRuntime();
+                        var rt = Runtime.getRuntime();
                         Process youtube_dl = rt.exec(youtube_dl_Parameters(), null, new File("/"));
-                        BufferedReader input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
+                        var input = new BufferedReader(new InputStreamReader(youtube_dl.getInputStream()));
                         updateMessage("[Youtube-DL] Youtube-dl is running");
                         String line;
                         while ((line = input.readLine()) != null && !Thread.currentThread().isInterrupted()) {
@@ -250,8 +273,6 @@ public final class TabController implements Initializable {
 
                         if (checkBox_Convert.isSelected()) {
                             startFFmpeg();
-                        } else if (checkBox_AutoClose.isSelected()) {
-                            System.exit(1);
                         } else {
                             btn_Start.setDisable(false);
                         }
@@ -280,13 +301,13 @@ public final class TabController implements Initializable {
                 var list = new File(dir + File.separator + folder).listFiles();
                 Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
                 if (list != null)
-                    for (File f : list) {
+                    for (var f : list) {
                         if (f.getName().endsWith((".vtt"))) {
                             try {
                                 synchronized (this) {
                                     //updateMessage("[FFmpeg] Starting FFmpeg");
                                     textArea_Logs.appendText("[FFmpeg] Converting SRT formatted subtitle(s) to VTT format\n");
-                                    Runtime rt = Runtime.getRuntime();
+                                    var rt = Runtime.getRuntime();
                                     Process ffmpeg = rt.exec("ffmpeg.exe -n -i " + "\"" + dir
                                             + File.separator + folder + File.separator
                                             + f.getName() + "\" " + "\"" + dir + File.separator
@@ -294,14 +315,13 @@ public final class TabController implements Initializable {
                                             + f.getName().substring(0, f.getName().length() - 4)
                                             + ".srt" + "\"", null, new File("/"));
                                     //updateMessage("[FFmpeg] FFmpeg is running");
-                                    BufferedReader input = new BufferedReader(
-                                            new InputStreamReader(ffmpeg.getInputStream()));
+                                    var input = new BufferedReader(new InputStreamReader(ffmpeg.getInputStream()));
                                     String line;
                                     while ((line = input.readLine()) != null) {
                                         messageQueue.put(line);
                                     }
                                     input.close();
-                                    int exitVal = ffmpeg.waitFor();
+                                    var exitVal = ffmpeg.waitFor();
                                     textArea_Logs.appendText("[FFmpeg] Finished | Exist code: " + exitVal + "\n");
                                     //updateMessage("[FFmpeg] Finished | Exist code: " + exitVal);
                                     btn_Start.setDisable(false);
@@ -341,28 +361,11 @@ public final class TabController implements Initializable {
     private void useFFmpegClicked() {
 
         if (checkBox_UseFFmpeg.isSelected()) {
-            checkBox_Merge.setDisable(false);
+            checkBox_NoMerge.setDisable(false);
             checkBox_Convert.setDisable(false);
         } else {
-            checkBox_Merge.setDisable(true);
+            checkBox_NoMerge.setDisable(true);
             checkBox_Convert.setDisable(true);
-        }
-    }
-
-    @FXML
-    private void downloadMode(ActionEvent event) {
-        if (event.getSource().equals(checkBox_Single)) {
-            if (checkBox_Single.isSelected()) {
-                checkBox_List.setSelected(false);
-            } else {
-                checkBox_Single.setSelected(false);
-            }
-        } else {
-            if (checkBox_List.isSelected()) {
-                checkBox_Single.setSelected(false);
-            } else {
-                checkBox_List.setSelected(false);
-            }
         }
     }
 
@@ -383,19 +386,34 @@ public final class TabController implements Initializable {
             youtubedlConfig.append(" --write-description");
         if (checkBox_NoOverwrites.isSelected())
             youtubedlConfig.append(" --no-overwrites");
-        if (checkBox_1080P.isSelected())
-            youtubedlConfig.append(" -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio");
         if (checkBox_UseProxy.isSelected())
             youtubedlConfig.append(" --proxy http://127.0.0.1:1080/");
-        if (checkBox_Single.isSelected())
+        if (radioButton_Single.isSelected())
             youtubedlConfig.append(" --no-playlist");
-        if (checkBox_List.isSelected())
+        else
             youtubedlConfig.append(" --yes-playlist");
         if (checkBox_SaveDescription.isSelected())
             youtubedlConfig.append(" --write-description");
-        if (checkBox_Merge.isSelected())
+        if (!checkBox_NoMerge.isSelected() && !radioButton_Custom.isSelected()) {
+            if (radioButton_720P_MP4.isSelected()) {
+                youtubedlConfig.append(" -f bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720]");
+            } else if (radioButton_1080P_MP4.isSelected()) {
+                youtubedlConfig.append(" -f bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio");
+            } else {
+                youtubedlConfig.append(" -f bestvideo+bestaudio");
+            }
             youtubedlConfig.append(" --ffmpeg-location " + "\"").append(currentPath).append("\"");
-        if (checkBox_Merge.isSelected())
+
+        } else if (checkBox_NoMerge.isSelected() && !radioButton_Custom.isSelected()){
+            if (radioButton_720P_MP4.isSelected()) {
+                youtubedlConfig.append(" -f bestvideo[height<=720][ext=mp4],bestaudio[ext=m4a]/best[height<=720]");
+            } else if (radioButton_1080P_MP4.isSelected()) {
+                youtubedlConfig.append(" -f bestvideo[height<=1080][ext=mp4],bestaudio[ext=m4a]/bestvideo,bestaudio");
+            } else {
+                youtubedlConfig.append(" -f bestvideo,bestaudio");
+            }
+        }
+        if (checkBox_Thumbnail.isSelected())
             youtubedlConfig.append(" --write-thumbnail");
         youtubedlConfig.append(" -o \"").append(dir).append(File.separator).append(folder).append("\\%(title)s.%(ext)s\"");
         youtubedlConfig.append(" ").append(url);
@@ -491,27 +509,29 @@ public final class TabController implements Initializable {
                     checkBox_DownloadSub.setSelected(true);
                 if (props.getProperty("SaveDescription").equals(True))
                     checkBox_SaveDescription.setSelected(true);
-                if (props.getProperty("1080P").equals(True))
-                    checkBox_1080P.setSelected(true);
+                if (props.getProperty("720P_MP4").equals(True))
+                    radioButton_720P_MP4.setSelected(true);
+                else if (props.getProperty("1080P_MP4").equals(True))
+                    radioButton_1080P_MP4.setSelected(true);
+                else if (props.getProperty("HighestQuality").equals(True))
+                    radioButton_HighestQuality.setSelected(true);
+                else if (props.getProperty("Custom").equals(True))
+                    radioButton_Custom.setSelected(true);
                 if (props.getProperty("NoOverwrites").equals(True))
                     checkBox_NoOverwrites.setSelected(true);
-                if (props.getProperty("AutoClose").equals(True))
-                    checkBox_AutoClose.setSelected(true);
+
                 if (props.getProperty("Thumbnail").equals(True))
                     checkBox_Thumbnail.setSelected(true);
-                if (props.getProperty("Single").equals(True)) {
-                    checkBox_Single.setSelected(true);
-                    checkBox_List.setSelected(false);
-                } else {
-                    checkBox_Single.setSelected(false);
-                    checkBox_List.setSelected(true);
-                }
+                if (props.getProperty("Playlist").equals(True))
+                    radioButton_Playlist.setSelected(true);
+                else radioButton_Single.setSelected(true);
+
                 if (props.getProperty("UseFFmpeg").equals(True)) {
                     checkBox_UseFFmpeg.setSelected(true);
                     if (props.getProperty("Convert").equals(True))
                         checkBox_Convert.setSelected(true);
-                    if (props.getProperty("Merge").equals(True))
-                        checkBox_Merge.setSelected(true);
+                    if (props.getProperty("NoMerge").equals(True))
+                        checkBox_NoMerge.setSelected(true);
                 }
                 textField_URL.setText(props.getProperty("Url"));
                 textField_Folder.setText(props.getProperty("Folder"));
@@ -562,9 +582,8 @@ public final class TabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getConfig();
-
         if (!checkBox_UseFFmpeg.isSelected()) {
-            checkBox_Merge.setDisable(true);
+            checkBox_NoMerge.setDisable(true);
             checkBox_Convert.setDisable(true);
         }
         url = textField_URL.getText();
