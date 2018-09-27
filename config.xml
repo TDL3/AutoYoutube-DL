@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="DownloadSub">true</entry>
+<entry key="UseProxy">true</entry>
+<entry key="1080P_MP4">true</entry>
+<entry key="Convert">false</entry>
+<entry key="Custom">false</entry>
+<entry key="NoMerge">false</entry>
+<entry key="SaveURL">true</entry>
+<entry key="Thumbnail">true</entry>
+<entry key="NoOverwrites">true</entry>
+<entry key="Playlist">false</entry>
+<entry key="HighestQuality">false</entry>
+<entry key="SaveDescription">true</entry>
+<entry key="720P_MP4">false</entry>
+<entry key="UseFFmpeg">true</entry>
+</properties>

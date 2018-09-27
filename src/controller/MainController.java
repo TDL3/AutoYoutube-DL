@@ -44,8 +44,7 @@ public class MainController implements Initializable {
     public MainController() {
     }
 
-    @FXML
-    private void createNewTab() throws IOException {
+    public void createNewTab() throws IOException {
         var tab = new Tab("Youtube-DL");
         Parent root = FXMLLoader.load(getClass().getResource("/form/NewTab.fxml"));
         tab.setContent(root);
@@ -59,8 +58,7 @@ public class MainController implements Initializable {
 
     }
 
-    @FXML
-    private void closeTab() {
+    public void closeTab() {
         if (tabPane_Main.getTabs().size() == 1) {
             Platform.exit();
         } else {
@@ -68,13 +66,11 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    private void exitByUser() {
+    public void exitByUser() {
         Platform.exit();
     }
 
-    @FXML
-    private void loadConfig() {
+    public void loadConfig() {
         Stage stage = (Stage) tabPane_Main.getScene().getWindow();
         var chooser = new FileChooser();
         chooser.setTitle("Select a configuration file");
@@ -96,8 +92,7 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    private void saveConfig() {
+   public void saveConfig() {
         Stage stage = (Stage) tabPane_Main.getScene().getWindow();
         var chooser = new FileChooser();
         chooser.setTitle("Select where you want save the configuration file");
@@ -120,8 +115,7 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    private void about() throws IOException {
+    public void about() throws IOException {
         var about = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/form/About.fxml"));
         about.initModality(Modality.APPLICATION_MODAL);
@@ -132,8 +126,7 @@ public class MainController implements Initializable {
         about.showAndWait();
     }
 
-    @FXML
-    private void customArguments() throws IOException {
+    public void customArguments() throws IOException {
         var customCommends = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/form/CustomCommands.fxml"));
         customCommends.initModality(Modality.APPLICATION_MODAL);

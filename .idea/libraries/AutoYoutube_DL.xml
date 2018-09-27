@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="AutoYoutube-DL">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/out/artifacts/AutoYoutube_DL_JavFX_jar/AutoYoutube-DL.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

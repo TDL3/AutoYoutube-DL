@@ -110,8 +110,7 @@ public final class TabController implements Initializable {
         customCommands = new File(System.getProperty("user.dir") + File.separator + "customCommands.txt");
     }
 
-    @FXML
-    private void setDir(ActionEvent event) {
+    public void setDir(ActionEvent event) {
         var stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
         var chooser = new DirectoryChooser();
         chooser.setTitle("Select Directory where youtube-dl saves file to");
@@ -126,8 +125,7 @@ public final class TabController implements Initializable {
             textField_Dir.setText(selectedDirectory.getAbsolutePath());
     }
 
-    @FXML
-    private void setFolder(ActionEvent event) {
+    public void setFolder(ActionEvent event) {
 
         var stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
         var chooser = new DirectoryChooser();
@@ -304,8 +302,7 @@ public final class TabController implements Initializable {
                     for (var f : list) {
                         if (f.getName().endsWith((".vtt"))) {
                             try {
-                                synchronized (this) {
-                                    //updateMessage("[FFmpeg] Starting FFmpeg");
+                                //updateMessage("[FFmpeg] Starting FFmpeg");
                                     textArea_Logs.appendText("[FFmpeg] Converting SRT formatted subtitle(s) to VTT format\n");
                                     var rt = Runtime.getRuntime();
                                     Process ffmpeg = rt.exec("ffmpeg.exe -n -i " + "\"" + dir
@@ -325,7 +322,6 @@ public final class TabController implements Initializable {
                                     textArea_Logs.appendText("[FFmpeg] Finished | Exist code: " + exitVal + "\n");
                                     //updateMessage("[FFmpeg] Finished | Exist code: " + exitVal);
                                     btn_Start.setDisable(false);
-                                }
                             } catch (IOException e) {
                                 //updateMessage("[FATAL] FAILED_TO_START_FFMPEG");
                                 textArea_Logs.appendText("[FATAL] FAILED_TO_START_FFMPEG \n");
