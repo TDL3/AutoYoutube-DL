@@ -13,21 +13,21 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="menuItem_NewTab" mnemonicParsing="false" onAction="#createNewTab" text="New tab" />
-                  <MenuItem fx:id="menuItem_CloseTab" mnemonicParsing="false" onAction="#closeTab" text="Close tab" />
+                  <MenuItem mnemonicParsing="false" onAction="#createNewTab" text="New tab" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeTab" text="Close tab" />
                   <MenuItem mnemonicParsing="false" onAction="#customArguments" text="Custom commends" />
-              <MenuItem fx:id="menuItem_Exit" mnemonicParsing="false" onAction="#exitByUser" text="Exit" />
+              <MenuItem  mnemonicParsing="false" onAction="#exitByUser" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="menuItem_LoadConfig" mnemonicParsing="false" onAction="#loadConfig" text="Load Config" />
-                  <MenuItem fx:id="menuItem_SaveConfig" mnemonicParsing="false" onAction="#saveConfig" text="Save Config to" />
+              <MenuItem mnemonicParsing="false" onAction="#loadConfig" text="Load Config" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveConfig" text="Save Config to" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="menuItem_About" mnemonicParsing="false" onAction="#about" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
             </items>
           </Menu>
         </menus>

@@ -76,11 +76,6 @@ public final class TabController implements Initializable {
     private RadioButton radioButton_Custom;
 
     @FXML
-    private ToggleGroup videoQuality;
-    @FXML
-    private ToggleGroup downloadMode;
-
-    @FXML
     private Label lbl_Dir;
     @FXML
     private Label lbl_Folder;

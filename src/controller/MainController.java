@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -26,18 +25,6 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private MenuItem menuItem_NewTab;
-    @FXML
-    private MenuItem menuItem_CloseTab;
-    @FXML
-    private MenuItem menuItem_Exit;
-    @FXML
-    private MenuItem menuItem_About;
-    @FXML
-    private MenuItem menuItem_LoadConfig;
-    @FXML
-    private MenuItem menuItem_SaveConfig;
     @FXML
     private TabPane tabPane_Main;
 
