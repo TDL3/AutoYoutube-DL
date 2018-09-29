@@ -95,7 +95,6 @@ public final class TabController implements Initializable {
     private String url; // url of a video or a playlist
     private String folder; // save stuff that youtube-dl download
     private String dir; // user defined directory
-    private String currentPath; // directory where program is located
 
     private Properties props; // used to save user defined data to a xml file
     private File config; // xml file used to save props
@@ -104,10 +103,9 @@ public final class TabController implements Initializable {
     private Task<Void> youtube_dl;
 
     public TabController() {
-        currentPath = System.getProperty("user.dir");
         props = new Properties();
-        config = new File(currentPath + File.separator + "config.xml");
-        customCommands = new File(System.getProperty("user.dir") + File.separator + "customCommands.txt");
+        config = new File("."+ File.separator + "config.xml");
+        customCommands = new File("." + File.separator + "customCommands.txt");
     }
 
     public void setDir(ActionEvent event) {
@@ -341,6 +339,7 @@ public final class TabController implements Initializable {
     private void interruptYoutube_DL() {
         if (youtube_dl != null) {
             youtube_dl.cancel();
+            textArea_Logs.appendText("[AutoYoutube-DL] Download aborted");
             youtube_dl = null;
             btn_Start.setDisable(false);
         }
@@ -366,7 +365,7 @@ public final class TabController implements Initializable {
     }
 
     private String youtube_dl_Parameters() {
-        var youtubedlConfig = new StringBuilder("youtube-dl.exe ");
+        var youtubedlConfig = new StringBuilder("youtube-dl.exe");
         try {
             customCommands.createNewFile();
             var input = new BufferedReader(new FileReader(customCommands));
@@ -398,7 +397,7 @@ public final class TabController implements Initializable {
             } else {
                 youtubedlConfig.append(" -f bestvideo+bestaudio");
             }
-            youtubedlConfig.append(" --ffmpeg-location " + "\"").append(currentPath).append("\"");
+            youtubedlConfig.append(" --ffmpeg-location " + "\"").append(System.getProperty("user.dir")).append("\"");
 
         } else if (checkBox_NoMerge.isSelected() && !radioButton_Custom.isSelected()){
             if (radioButton_720P_MP4.isSelected()) {
@@ -413,6 +412,7 @@ public final class TabController implements Initializable {
             youtubedlConfig.append(" --write-thumbnail");
         youtubedlConfig.append(" -o \"").append(dir).append(File.separator).append(folder).append("\\%(title)s.%(ext)s\"");
         youtubedlConfig.append(" ").append(url);
+        System.out.println(youtubedlConfig.toString());
         return youtubedlConfig.toString();
     }
 

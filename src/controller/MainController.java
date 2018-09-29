@@ -99,7 +99,7 @@ public class MainController implements Initializable {
         File selectedFile = chooser.showOpenDialog(stage);
         if (selectedFile != null) {
             try {
-                Files.copy(Paths.get(System.getProperty("user.dir"), File.separator, "config.xml"),
+                Files.copy(Paths.get(".", File.separator, "config.xml"),
                         selectedFile.toPath(),
                         REPLACE_EXISTING);
                 new AlertDialog().informationDialog("Notice",

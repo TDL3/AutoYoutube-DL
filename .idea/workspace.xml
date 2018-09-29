@@ -7,13 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ad524fb-3e05-4a57-9bcd-a92d79940f80" name="Default" comment="Removed Synchronized block and simplify some code">
-      <change afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/AutoYoutube_DL_JavFX_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/AutoYoutube_DL_JavFX_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/AutoYoutube_DL.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/AutoYoutube_DL.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AutoYoutube-DL-JavFX.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AutoYoutube-DL-JavFX.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/TabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/TabController.java" afterDir="false" />
     </list>
@@ -80,22 +75,25 @@
     <session id="-1751819140">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.closed" value="18" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="5" />
+          <entry key="project.open.time.4" value="6" />
           <entry key="project.open.time.5" value="5" />
           <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="16" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="LICENSE" value="2" />
           <entry key="iml" value="1" />
+          <entry key="java" value="1" />
           <entry key="md" value="1" />
+          <entry key="properties" value="1" />
           <entry key="regexp" value="1" />
           <entry key="xml" value="1" />
         </counts>
@@ -103,20 +101,22 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
+          <entry key="JAVA" value="1" />
           <entry key="PLAIN_TEXT" value="3" />
+          <entry key="Properties" value="1" />
           <entry key="RegExp" value="1" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="26" />
+          <entry key="java" value="75" />
           <entry key="txt" value="56" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="26" />
+          <entry key="JAVA" value="75" />
           <entry key="PLAIN_TEXT" value="56" />
         </counts>
       </usages-collector>
@@ -124,11 +124,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/TabController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11024">
-              <caret line="450" column="18" selection-start-line="450" selection-start-column="18" selection-end-line="450" selection-end-column="18" />
+            <state relative-caret-position="492">
+              <caret line="399" column="102" selection-start-line="399" selection-start-column="102" selection-end-line="399" selection-end-column="102" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -137,36 +137,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="52">
-                <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AutoYoutube-DL-JavFX.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="17" column="38" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controller/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+            <state relative-caret-position="1898">
+              <caret line="102" column="26" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -197,22 +174,22 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/form/About.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="208">
               <caret line="8" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/form/Main.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="702">
               <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
             </state>
           </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -269,8 +246,8 @@
         <option value="$PROJECT_DIR$/src/form/NewTab.fxml" />
         <option value="$PROJECT_DIR$/config.xml" />
         <option value="$PROJECT_DIR$/src/form/About.fxml" />
-        <option value="$PROJECT_DIR$/src/controller/MainController.java" />
         <option value="$PROJECT_DIR$/src/application/Main.java" />
+        <option value="$PROJECT_DIR$/src/controller/MainController.java" />
         <option value="$PROJECT_DIR$/src/controller/TabController.java" />
       </list>
     </option>
@@ -301,8 +278,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -412,6 +389,14 @@
       <workItem from="1534515703786" duration="9975000" />
       <workItem from="1534525761234" duration="5885000" />
     </task>
+    <task id="LOCAL-00001" summary="Removed Synchronized block and simplify some code">
+      <created>1538058528347</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1538058528347</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -430,8 +415,8 @@
     <frame x="-8" y="22" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.56971675" visible="true" weight="0.17643923" />
-      <window_info id="Structure" order="1" sideWeight="0.43028322" side_tool="true" visible="true" weight="0.17643923" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5664488" visible="true" weight="0.18123667" />
+      <window_info id="Structure" order="1" sideWeight="0.4335512" side_tool="true" visible="true" weight="0.18123667" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -464,6 +449,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -592,38 +587,47 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/form/CustomCommands.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="604">
           <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
         </state>
       </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/form/NewTab.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4810">
           <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
         </state>
       </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1820" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/TabController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11024">
-          <caret line="450" column="18" selection-start-line="450" selection-start-column="18" selection-end-line="450" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="52">
+            <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config.xml">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="14" column="41" lean-forward="true" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AutoYoutube-DL-JavFX.iml">
       <provider selected="true" editor-type-id="text-editor">
@@ -632,12 +636,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/MainController.java">
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/javafx.graphics/javafx/stage/Modality.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        <state relative-caret-position="208">
+          <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
         </state>
       </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../DEPENDENCIES/controlsfx-9.0.0.jar!/controlsfx_zh_CN.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1408" />
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/application/AlertDialog.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -660,20 +670,20 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/form/About.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
           <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/form/Main.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="702">
           <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
         </state>
       </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/MessageConsumer.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -682,18 +692,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+    <entry file="file://$PROJECT_DIR$/src/controller/MainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1898">
+          <caret line="102" column="26" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="52">
-            <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-          </first_editor>
-          <second_editor />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/TabController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="399" column="102" selection-start-line="399" selection-start-column="102" selection-end-line="399" selection-end-column="102" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
