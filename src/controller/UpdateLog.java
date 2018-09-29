@@ -1,16 +1,16 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.TextArea;
 
-public class MessageConsumer extends AnimationTimer {
-    private final BlockingQueue<String> messageQueue;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class UpdateLog extends AnimationTimer {
+    private final LinkedBlockingQueue<String> messageQueue;
     private final TextArea textArea_Logs;
 
-    public MessageConsumer(BlockingQueue<String> messageQueue, TextArea textArea_Logs) {
+    public UpdateLog(LinkedBlockingQueue<String> messageQueue, TextArea textArea_Logs) {
         this.messageQueue = messageQueue;
         this.textArea_Logs = textArea_Logs;
     }

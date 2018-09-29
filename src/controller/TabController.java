@@ -239,7 +239,7 @@ public final class TabController implements Initializable {
         youtube_dl = new Task<>() {
             @Override
             public Void call() {
-                Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
+                Platform.runLater(() -> new UpdateLog(messageQueue, textArea_Logs).start());
                 try {
                     messageQueue.put("[Youtube-DL] Starting Youtube-dl \n");
                     synchronized (this) {
@@ -273,6 +273,7 @@ public final class TabController implements Initializable {
                     //textArea_Logs.appendText("[FATAL] ERROR_YOUTUBEDL_START_FAIL \n");
                 } catch (InterruptedException e) {
                     //if(Task.class.isInstance(ffmpeg)) ffmpeg.cancel();
+                    textArea_Logs.appendText("[AutoYoutube-DL] Download aborted");
                     updateMessage("[Youtube-DL] CANCELED_BY_USER");
                     //textArea_Logs.appendText("[Youtube-DL] INTERRUPTED_BY_USER \n");
                 }
@@ -290,7 +291,7 @@ public final class TabController implements Initializable {
             @Override
             public Void call() {
                 var list = new File(dir + File.separator + folder).listFiles();
-                Platform.runLater(() -> new MessageConsumer(messageQueue, textArea_Logs).start());
+                Platform.runLater(() -> new UpdateLog(messageQueue, textArea_Logs).start());
                 if (list != null)
                     for (var f : list) {
                         if (f.getName().endsWith((".vtt"))) {
@@ -334,7 +335,7 @@ public final class TabController implements Initializable {
     private void interruptYoutube_DL() {
         if (youtube_dl != null) {
             youtube_dl.cancel();
-            textArea_Logs.appendText("[AutoYoutube-DL] Download aborted");
+
             youtube_dl = null;
             btn_Start.setDisable(false);
         }
@@ -407,7 +408,6 @@ public final class TabController implements Initializable {
             youtubedlConfig.append(" --write-thumbnail");
         youtubedlConfig.append(" -o \"").append(dir).append(File.separator).append(folder).append("\\%(title)s.%(ext)s\"");
         youtubedlConfig.append(" ").append(url);
-        System.out.println(youtubedlConfig.toString());
         return youtubedlConfig.toString();
     }
 
