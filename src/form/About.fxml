@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutController">
     <children>
         <ImageView fitHeight="99.0" fitWidth="99.0" layoutX="8.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="128.5999984741211" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="293.0" AnchorPane.topAnchor="29.0">
             <image>
@@ -19,7 +19,7 @@
         <Hyperlink layoutX="123.0" layoutY="202.0" onAction="#openLink" prefHeight="21.0" prefWidth="251.0" text="https://twitter.com/TDLThree" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="202.0" />
         <Label layoutX="68.0" layoutY="179.0" prefHeight="15.0" prefWidth="65.0" text="bilibili " />
         <Label layoutX="67.0" layoutY="204.0" prefHeight="15.0" prefWidth="59.0" text="Twitter" />
-        <Hyperlink layoutX="145.0" layoutY="224.0" prefHeight="21.0" prefWidth="251.0" text="https://TDL3.wordpress.com" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="224.0" />
+        <Hyperlink layoutX="145.0" layoutY="224.0" onAction="#openLink" prefHeight="21.0" prefWidth="251.0" text="https://TDL3.wordpress.com" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="224.0" />
         <Label layoutX="68.0" layoutY="227.0" prefHeight="15.0" prefWidth="46.0" text="Blog" />
     </children>
 </AnchorPane>

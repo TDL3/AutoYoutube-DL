@@ -132,7 +132,7 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             new AlertDialog().exceptionDialog("IOException Occurred",
                     "An Exception has been thrown",
-                    "Could not load fxml, probably caused by corrupted config.xml, try delete it and restart the app",
+                    "Could not load NewTab.fxml, probably caused by corrupted config.xml, try delete it and restart the app",
                      e);
         }
     }

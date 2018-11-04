@@ -97,16 +97,53 @@ public final class TabController implements Initializable {
 
     private Task<Void> youtube_dl;
 
+    private FadeTransition lbl_DirFadeTransition;
+    private FadeTransition lbl_FolderFadeTransition;
+    private FadeTransition lbl_URLFadeTransition;
+
     public TabController() {
         props = new Properties();
         config = new File("."+ File.separator + "config.xml");
         customCommands = new File("." + File.separator + "customCommands.txt");
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        getConfig();
+        if (!checkBox_UseFFmpeg.isSelected()) {
+            checkBox_NoMerge.setDisable(true);
+            checkBox_Convert.setDisable(true);
+        }
+        url = textField_URL.getText();
+        dir = textField_Dir.getText();
+        folder = textField_Folder.getText();
+
+        textArea_Logs.textProperty().addListener(e -> textArea_Logs.setScrollTop(Double.MAX_VALUE));
+
+        lbl_DirFadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_Dir);
+        lbl_DirFadeTransition.setFromValue(0.5);
+        lbl_DirFadeTransition.setToValue(1);
+        lbl_DirFadeTransition.setCycleCount(1);
+        lbl_DirFadeTransition.setAutoReverse(true);
+
+        lbl_FolderFadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_Folder);
+        lbl_FolderFadeTransition.setFromValue(0.5);
+        lbl_FolderFadeTransition.setToValue(1);
+        lbl_FolderFadeTransition.setCycleCount(1);
+        lbl_FolderFadeTransition.setAutoReverse(true);
+
+        lbl_URLFadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_URL);
+        lbl_URLFadeTransition.setFromValue(0.5);
+        lbl_URLFadeTransition.setToValue(1);
+        lbl_URLFadeTransition.setCycleCount(1);
+        lbl_URLFadeTransition.setAutoReverse(true);
+        statusBar_Main.setText("Ready");
+    }
+
     public void setDir(ActionEvent event) {
         var stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
         var chooser = new DirectoryChooser();
-        chooser.setTitle("Select Directory where youtube-dl saves file to");
+        chooser.setTitle("Select a Directory where youtube-dl saves file to");
         if (textField_Dir.getText() != null
                 && !textField_Dir.getText().equals("")
                 && Files.isDirectory(Paths.get(textField_Dir.getText()))) {
@@ -122,7 +159,7 @@ public final class TabController implements Initializable {
 
         var stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
         var chooser = new DirectoryChooser();
-        chooser.setTitle("Select Folder where youtube-dl saves file to");
+        chooser.setTitle("Select a Folder where youtube-dl saves file to");
         if (textField_Dir.getText() != null
                 && !textField_Dir.getText().equals("")
                 && Files.isDirectory(Paths.get(textField_Dir.getText()))) {
@@ -259,7 +296,7 @@ public final class TabController implements Initializable {
                         input.close();
                         int exitVal = youtube_dl.waitFor();
                         btn_Start.setDisable(false);
-                        updateMessage("[Youtube-DL] Finished | Exist code:" + exitVal);
+                        updateMessage("[Youtube-DL] Finished with Exist code " + exitVal);
                         messageQueue.put("[Youtube-DL] Finished | Exist code:" + exitVal + "\n");
 
                         if (checkBox_Convert.isSelected()) {
@@ -273,7 +310,7 @@ public final class TabController implements Initializable {
                     //textArea_Logs.appendText("[FATAL] ERROR_YOUTUBEDL_START_FAIL \n");
                 } catch (InterruptedException e) {
                     //if(Task.class.isInstance(ffmpeg)) ffmpeg.cancel();
-                    textArea_Logs.appendText("[AutoYoutube-DL] Download aborted");
+                    textArea_Logs.appendText("[AutoYoutube-DL] Download canceled");
                     updateMessage("[Youtube-DL] CANCELED_BY_USER");
                     //textArea_Logs.appendText("[Youtube-DL] INTERRUPTED_BY_USER \n");
                 }
@@ -313,7 +350,7 @@ public final class TabController implements Initializable {
                                     }
                                     input.close();
                                     var exitVal = ffmpeg.waitFor();
-                                    textArea_Logs.appendText("[FFmpeg] Finished | Exist code: " + exitVal + "\n");
+                                    textArea_Logs.appendText("[FFmpeg] Finished with Exist code " + exitVal + "\n");
                                     //updateMessage("[FFmpeg] Finished | Exist code: " + exitVal);
                                     btn_Start.setDisable(false);
                             } catch (IOException e) {
@@ -369,7 +406,7 @@ public final class TabController implements Initializable {
             while ((line = input.readLine()) != null) youtubedlConfig.append(line);
             input.close();
         } catch (IOException e) {
-            textArea_Logs.appendText("[AutoYoutube-DL] customCommands.txt can not be found, automatically created one");
+            textArea_Logs.appendText("[AutoYoutube-DL] Unknown error while creating customCommands.txt, your custom commends will not be loaded");
         }
         if (checkBox_DownloadSub.isSelected())
             youtubedlConfig.append(" --write-auto-sub --write-sub --sub-format vtt");
@@ -418,12 +455,7 @@ public final class TabController implements Initializable {
 
         if (dir == null || dir.equals("") || !Files.isDirectory(Paths.get(dir))) {
             lbl_Dir.setTextFill(Color.web("#f44b42"));
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_Dir);
-            fadeTransition.setFromValue(0.5);
-            fadeTransition.setToValue(1);
-            fadeTransition.setCycleCount(1);
-            fadeTransition.setAutoReverse(true);
-            fadeTransition.play();
+            lbl_DirFadeTransition.play();
             statusBar_Main.setText("INVALID DIRECTORY");
             return false;
         } else {
@@ -452,12 +484,7 @@ public final class TabController implements Initializable {
                 "^(?!(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\.[^.]*)?$)[^<>:\"/\\\\|?*\\x00-\\x1F]*[^<>:\"/\\\\|?*\\x00-\\x1F\\ .]$",
                 Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.COMMENTS).matcher(folder).matches()) {
             lbl_Folder.setTextFill(Color.web("#f44b42"));
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_Folder);
-            fadeTransition.setFromValue(0.5);
-            fadeTransition.setToValue(1);
-            fadeTransition.setCycleCount(1);
-            fadeTransition.setAutoReverse(true);
-            fadeTransition.play();
+            lbl_FolderFadeTransition.play();
             statusBar_Main.setText("INVALID FOLDER NAME");
             return false;
         } else {
@@ -470,12 +497,7 @@ public final class TabController implements Initializable {
             u.toURI();
         } catch (Exception e) {
             lbl_URL.setTextFill(Color.web("#f44b42"));
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), lbl_URL);
-            fadeTransition.setFromValue(0.5);
-            fadeTransition.setToValue(1);
-            fadeTransition.setCycleCount(1);
-            fadeTransition.setAutoReverse(true);
-            fadeTransition.play();
+            lbl_URLFadeTransition.play();
             statusBar_Main.setText("INVALID URL");
             return false;
         }
@@ -541,7 +563,7 @@ public final class TabController implements Initializable {
         } else {
             try {
                 if (config.createNewFile()) {
-                    textArea_Logs.appendText("[AutoYoutube-DL] Failed to find an existing configuration file, automatically created a new one\n");
+                    textArea_Logs.appendText("[AutoYoutube-DL] Configuration file not found, new one has been created\n");
                 }
             } catch (IOException e) {
                 textArea_Logs.appendText("[AutoYoutube-DL] Failed to create config.xml, your settings will not be saved\n");
@@ -558,29 +580,15 @@ public final class TabController implements Initializable {
             output = new FileOutputStream(config);
             props.storeToXML(output, null, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            textArea_Logs.appendText("[AutoYoutube-DL] Failed to Save configuration file\n");
+            textArea_Logs.appendText("[AutoYoutube-DL] Failed to Save configurations\n");
         } finally {
             if (output != null) {
                 try {
                     output.close();
                 } catch (IOException e) {
-                    textArea_Logs.appendText("[AutoYoutube-DL] Unknown Error occurred during save configuration file\n");
+                    textArea_Logs.appendText("[AutoYoutube-DL] Unknown Error occurred during save configurations\n");
                 }
             }
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        getConfig();
-        if (!checkBox_UseFFmpeg.isSelected()) {
-            checkBox_NoMerge.setDisable(true);
-            checkBox_Convert.setDisable(true);
-        }
-        url = textField_URL.getText();
-        dir = textField_Dir.getText();
-        folder = textField_Folder.getText();
-        textArea_Logs.textProperty().addListener(e -> textArea_Logs.setScrollTop(Double.MAX_VALUE));
-        statusBar_Main.setText("Ready");
     }
 }

@@ -1,23 +1,20 @@
 package controller;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
+
+import java.awt.*;
+import java.net.URL;
 
 public class AboutController {
 
     public AboutController() {
     }
 
-    @FXML
-    private void openLink(ActionEvent event) throws IOException, URISyntaxException {
+    public void openLink(ActionEvent event) {
         Hyperlink link = (Hyperlink) event.getSource();
-        Desktop.getDesktop().browse(new URL(link.getText()).toURI());
+        try {
+            Desktop.getDesktop().browse(new URL(link.getText()).toURI());
+        } catch (Exception e) { } //intended
     }
 }
